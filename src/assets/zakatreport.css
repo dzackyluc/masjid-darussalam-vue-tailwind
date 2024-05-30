@@ -1,0 +1,60 @@
+body {
+    margin: 0;
+    font-family: Poppins, sans-serif;
+    background-color: white;
+}
+
+.navbar-wrapper {
+    position: sticky;
+    top: 0;
+    /* z-index: 1000; Ensure it is above other content */
+    background-color: white; /* Change to your bg color */
+    width: 100%;
+}
+
+#navbarMenu {
+    display: flex;
+    gap: 20px;
+    color: #4E6F52;
+}
+
+.hidden { 
+    display: none; 
+}
+
+.popup-show {
+    animation: popup-show 0.3s ease;
+}
+
+.popup-content {
+    width: 670px; /* Sesuaikan dengan lebar yang Anda inginkan */
+    max-height: 90%; /* Sesuaikan dengan tinggi yang Anda inginkan */
+    overflow-y: auto; /* Untuk menambahkan scroll pada form */
+    scrollbar-width: none;
+}
+
+.popup-hide {
+    animation: popup-hide 0.3s ease;
+}
+
+@keyframes popup-show {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes popup-hide {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}
