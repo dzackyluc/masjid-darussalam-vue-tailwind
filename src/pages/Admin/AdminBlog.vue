@@ -5,11 +5,13 @@ import Editor from "@tinymce/tinymce-vue";
 
 const blogs = ref([]);
 const newBlog = ref({
+  id: null,
   title: "",
   description: "",
   url: "",
   image: null,
 });
+const isEditing = ref(false);
 
 const getImagePath = (folder, imagePath) => {
   return import.meta.env.VITE_BASE_IMG_URL + folder + "/" + imagePath;
@@ -31,6 +33,7 @@ const fetchBlogs = async () => {
 const handleFileUpload = (event) => {
   newBlog.value.image = event.target.files[0];
 };
+
 const token = "4|UScdEMUD4dozKsogjlBtatrq5xBpga2yjSBL07kx7d030af8"; // Replace with your actual token, or retrieve it from storage
 // const token = localStorage.getItem('token'); // Example if stored in localStorage
 
@@ -42,22 +45,51 @@ const addBlog = async () => {
   formData.append("thumbnail", newBlog.value.image);
 
   try {
-    const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/blog`, {
-      method: "POST",
-      body: formData,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    let response;
+    if (isEditing.value) {
+      // Update blog
+      response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/blog/${newBlog.value.id}`, {
+        method: "POST",
+        body: formData,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    } else {
+      // Create new blog
+      response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/blog`, {
+        method: "POST",
+        body: formData,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    }
+
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
+
     const data = await response.json();
-    blogs.value.push(data.data);
+    if (isEditing.value) {
+      // Update blog in the list
+      const index = blogs.value.findIndex(blog => blog.id === newBlog.value.id);
+      if (index !== -1) {
+        blogs.value[index] = data.data;
+      }
+      isEditing.value = false;
+    } else {
+      blogs.value.push(data.data);
+    }
     resetForm();
   } catch (error) {
-    console.error("There was a problem adding the blog:", error);
+    console.error(`There was a problem ${isEditing.value ? "updating" : "adding"} the blog:`, error);
   }
+};
+
+const editBlog = (blog) => {
+  newBlog.value = { ...blog };
+  isEditing.value = true;
 };
 
 const deleteBlog = async (blogId) => {
@@ -82,11 +114,13 @@ const deleteBlog = async (blogId) => {
 
 const resetForm = () => {
   newBlog.value = {
+    id: null,
     title: "",
     description: "",
     url: "",
     image: null,
   };
+  isEditing.value = false;
   document.getElementById("formFile").value = null;
 };
 
@@ -125,11 +159,8 @@ onMounted(fetchBlogs);
               />
               <div class="card-body">
                 <h5 class="card-title">{{ blog.title }}</h5>
-
-                <br />
-                <br />
                 <div class="d-flex justify-content-end gap-2">
-                  <button class="btn btn-primary block">Edit</button>
+                  <button class="btn btn-primary block" @click="editBlog(blog)">Edit</button>
                   <button
                     @click="deleteBlog(blog.id)"
                     class="btn btn-primary block"
@@ -147,7 +178,7 @@ onMounted(fetchBlogs);
         <section class="section">
           <div class="card">
             <div class="card-header">
-              <h2 class="card-title">Add Blog</h2>
+              <h2 class="card-title">{{ isEditing ? "Edit" : "Add" }} Blog</h2>
             </div>
 
             <div class="card-body">
@@ -158,6 +189,7 @@ onMounted(fetchBlogs);
                       class="form-control"
                       type="file"
                       @change="handleFileUpload"
+                      id="formFile"
                     />
                   </div>
                   <div class="form-group">
@@ -186,7 +218,7 @@ onMounted(fetchBlogs);
                       class="btn btn-primary block"
                       style="margin-top: 0.5rem; width: 100%"
                     >
-                      Tambah
+                      {{ isEditing ? "Update" : "Tambah" }}
                     </button>
                   </div>
                 </form>
@@ -198,6 +230,7 @@ onMounted(fetchBlogs);
     </div>
   </div>
 </template>
+
 
 
 

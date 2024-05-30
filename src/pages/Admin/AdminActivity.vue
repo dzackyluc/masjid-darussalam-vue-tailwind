@@ -33,7 +33,7 @@ const fetchActivitys = async () => {
 const handleFileUpload = (event) => {
   newActivity.value.image = event.target.files[0];
 };
-const token = "4|UScdEMUD4dozKsogjlBtatrq5xBpga2yjSBL07kx7d030af8";
+const token = "5|UdKTrtRSq0WUF2DWszEuBpd5LsHOPYfTnTTcEjlO089d5a97";
 
 const addActivity = async () => {
   try {
