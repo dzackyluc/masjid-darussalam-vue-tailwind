@@ -3,6 +3,8 @@
 import { ref, onMounted } from "vue";
 import Editor from "@tinymce/tinymce-vue";
 
+const token = localStorage.getItem("authToken");
+
 const blogs = ref([]);
 const newBlog = ref({
   id: null,
@@ -33,9 +35,6 @@ const fetchBlogs = async () => {
 const handleFileUpload = (event) => {
   newBlog.value.image = event.target.files[0];
 };
-
-const token = "4|UScdEMUD4dozKsogjlBtatrq5xBpga2yjSBL07kx7d030af8"; // Replace with your actual token, or retrieve it from storage
-// const token = localStorage.getItem('token'); // Example if stored in localStorage
 
 const addBlog = async () => {
   const formData = new FormData();

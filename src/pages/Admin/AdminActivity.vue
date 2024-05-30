@@ -3,6 +3,9 @@
 import { ref, onMounted } from "vue";
 import Editor from "@tinymce/tinymce-vue";
 
+const token = localStorage.getItem("authToken");
+
+
 const Activitys = ref([]);
 const newActivity = ref({
   title: "",
@@ -33,7 +36,6 @@ const fetchActivitys = async () => {
 const handleFileUpload = (event) => {
   newActivity.value.image = event.target.files[0];
 };
-const token = "5|UdKTrtRSq0WUF2DWszEuBpd5LsHOPYfTnTTcEjlO089d5a97";
 
 const addActivity = async () => {
   try {

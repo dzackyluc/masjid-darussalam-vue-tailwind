@@ -122,9 +122,9 @@
             </li>
 
             <li class="sidebar-item">
-              <a href="index.html" class="sidebar-link">
+              <button @click="handleLogout()" class="sidebar-link">
                 <i class="bi bi-box-arrow-right"></i><span>Keluar</span>
-              </a>
+              </button>
             </li>
           </ul>
         </div>
@@ -140,12 +140,20 @@
 <script setup>
 import { onMounted } from "vue";
 
+import {logout} from "../../router/auth";
+
+const handleLogout = async () => {
+  logout();
+  window.location.href = "/login";
+};
+
 onMounted(() => {
   const script = document.createElement("script");
   script.src = "../../assets/static/js/components/dark.js";
   script.async = true;
   document.body.appendChild(script);
 });
+
 </script>
 
 <style scoped>

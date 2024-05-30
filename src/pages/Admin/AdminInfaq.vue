@@ -2,8 +2,10 @@
 import { ref, onMounted } from "vue";
 import Editor from "@tinymce/tinymce-vue";
 import DataTable from 'datatables.net-bs5';
-// import "datatables.net-dt/css/jquery.dataTables.css";
 import $ from 'jquery';
+
+
+const token = localStorage.getItem("authToken");
 
 const Activitys = ref([]);
 const newActivity = ref({
@@ -34,8 +36,6 @@ const fetchActivitys = async () => {
 const handleFileUpload = (event) => {
   newActivity.value.image = event.target.files[0];
 };
-const token = "4|UScdEMUD4dozKsogjlBtatrq5xBpga2yjSBL07kx7d030af8";
-
 const addActivity = async () => {
   try {
     const myHeaders = new Headers();
