@@ -37,14 +37,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td class="p-2">1</td>
-                            <td class="p-2">Haikal</td>
-                            <td class="p-2">30-04-2024</td>
-                            <td class="p-2">Malik</td>
-                            <td class="p-2">Cici</td>
-                            <td class="p-2">Fitrah</td>
-                        </tr>
+                      
                         <tr>
                             <td class="p-2">2</td>
                             <td class="p-2">Haikal</td>
@@ -98,7 +91,7 @@
                         </div>
                         <div class="flex justify-end pt-8">
                                 <button type="button" @click="closePopup" class="box-border h-[33px] px-6 py-1 mx-2 bg-[#4E6F52] text-[#F6EFE5] font-medium shadow-md transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 rounded-[50px]">Batal</button>
-                                <button type="submit" class="box-border h-[33px] px-6 py-1 mx-2 bg-[#4E6F52] text-[#F6EFE5] font-medium shadow-md transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 rounded-[50px]">Lanjut</button>
+                                <button type="submit"  @click="showSnap" class="box-border h-[33px] px-6 py-1 mx-2 bg-[#4E6F52] text-[#F6EFE5] font-medium shadow-md transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 rounded-[50px]">Lanjut</button>
                         </div>
                     </form>
                 </div>
@@ -209,6 +202,7 @@
 <script setup>
     import AppBar from '../components/AppBar.vue'
     import '../assets/zakatreport.css' 
+
 </script>
 <!-- <link rel="https://cdn.tailwindcss.com" rel="stylesheet"> -->
 <script>
@@ -268,7 +262,58 @@ export default {
       alert('Form berhasil dikirim!');
       this.isPaymentTunaiVisible = false;
       this.isPaymentTransferVisible = false;
+    },
+    async showSnap() {
+
+        this.closePopup()
+        const myHeaders = new Headers();
+myHeaders.append("Authorization", "Bearer 4|UScdEMUD4dozKsogjlBtatrq5xBpga2yjSBL07kx7d030af8");
+
+const formdata = new FormData();
+formdata.append("type", "maal");
+formdata.append("amount", "20000");
+formdata.append("name", "Reksa Prayoga Syahputra");
+formdata.append("gender", "laki-laki");
+formdata.append("phone", "0895331493506");
+formdata.append("email", "reksa.prayoga1012@gmail.com");
+
+const requestOptions = {
+  method: "POST",
+  headers: myHeaders,
+  body: formdata,
+  redirect: "follow"
+};
+
+fetch("http://34.34.221.131/api/zakat/bayar", requestOptions)
+  .then((response) => response.json())
+  .then((result) => {
+// Memanggil fungsi snap.pay() dengan snap token yang diterima dari backend
+snap.pay(result.data, {
+        // Optional: Menambahkan callback untuk menangani kesuksesan pembayaran
+        onSuccess: function(result) {
+          console.log(result);
+          // Tambahkan logika sesuai kebutuhan
+        },
+        // Optional: Menambahkan callback untuk menangani pembayaran yang tertunda
+        onPending: function(result) {
+          console.log( result);
+          // Tambahkan logika sesuai kebutuhan
+        },
+        // Optional: Menambahkan callback untuk menangani kesalahan pembayaran
+        onError: function(result) {
+          console.error( result);
+          // Tambahkan logika sesuai kebutuhan
+        }
+      });
+
+  })
+  .catch((error) => console.error(error));
+
+
+
+      
     }
   }
 };
 </script>
+
