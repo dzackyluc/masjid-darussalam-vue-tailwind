@@ -5,8 +5,7 @@
         <div class="sidebar-header position-relative">
           <div class="d-flex justify-content-between align-items-center">
             <div class="logo">
-              <i class="bi bi-person-circle"></i>
-              <span>Admin</span>
+              <span>MQADM</span>
             </div>
             <div class="theme-toggle d-flex gap-2 align-items-center mt-2">
               <svg
@@ -75,18 +74,14 @@
         </div>
         <div class="sidebar-menu">
           <ul class="menu">
-            <li class="sidebar-item active">
-              <a href="index.html" class="sidebar-link">
+            <li
+              class="sidebar-item"
+              :class="{ active: $route.path === '/admin' }"
+            >
+              <router-link :to="'/admin'" class="sidebar-link">
                 <i class="bi bi-justify"></i>
                 <span>Dashboard</span>
-              </a>
-            </li>
-
-            <li class="sidebar-item">
-              <a href="zakat.html" class="sidebar-link">
-                <i class="bi bi-person-badge-fill"></i>
-                <span>Zakat</span>
-              </a>
+              </router-link>
             </li>
 
             <li class="sidebar-item">
@@ -96,25 +91,36 @@
               </a>
             </li>
 
-            <li class="sidebar-item">
-              <a href="kegiatan.html" class="sidebar-link">
+            <li
+              class="sidebar-item"
+              :class="{ active: $route.path === '/admin/activities' }"
+            >
+              <router-link :to="'/admin/activities'" class="sidebar-link">
                 <i class="bi bi-journal-check"></i>
                 <span>Kegiatan</span>
-              </a>
+              </router-link>
             </li>
 
-            <li class="sidebar-item">
-              <a href="blog.html" class="sidebar-link">
+            <li
+              class="sidebar-item"
+              :class="{ active: $route.path === '/admin/blogs' }"
+            >
+              <router-link :to="'/admin/blogs'" class="sidebar-link">
                 <i class="bi bi-pen-fill"></i>
                 <span>Blog</span>
-              </a>
+              </router-link>
             </li>
-            <li class="sidebar-item">
-              <a href="reservasi.html" class="sidebar-link">
+
+            <li
+              class="sidebar-item"
+              :class="{ active: $route.path === '/admin/reservasi' }"
+            >
+              <router-link :to="'/admin/reservasi'" class="sidebar-link">
                 <i class="bi bi-file-earmark-medical-fill"></i>
                 <span>Reservasi</span>
-              </a>
+              </router-link>
             </li>
+
             <li class="sidebar-item">
               <a href="index.html" class="sidebar-link">
                 <i class="bi bi-box-arrow-right"></i><span>Keluar</span>
@@ -132,13 +138,12 @@
 
 
 <script setup>
-import { onMounted } from 'vue';
+import { onMounted } from "vue";
 
-// Load external JavaScript file after component is mounted
 onMounted(() => {
-  const script = document.createElement('script');
-  script.src = '../../assets/static/js/components/dark.js';
-  script.async = true; // Optional: Set to true if the script should be executed asynchronously
+  const script = document.createElement("script");
+  script.src = "../../assets/static/js/components/dark.js";
+  script.async = true;
   document.body.appendChild(script);
 });
 </script>

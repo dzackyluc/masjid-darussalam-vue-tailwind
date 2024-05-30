@@ -10,7 +10,7 @@ const BlogAdmin = () => import('../pages/Admin/AdminBlog.vue');
 const ActivitiesAdmin = () => import('../pages/Admin/AdminActivity.vue');
 // const ReservasiAdmin = () => import('../pages/admin/Reservasi.vue');
 // const ZakatAdmin = () => import('../pages/admin/Zakat.vue');
-// const InfaqAdmin = () => import('../pages/admin/Infaq.vue');
+const InfaqAdmin = () => import('../pages/Admin/AdminInfaq.vue');
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -50,6 +50,15 @@ const router = createRouter({
                     path: 'activities',
                     component: ActivitiesAdmin,
                 },
+                {
+                    path: 'zakat',
+                    component: Zakat,
+                },
+                {
+                    path: 'infaq',
+                    component: InfaqAdmin,
+                }
+                
                 // {
                 //     path: 'reservasi',
                 //     component: ReservasiAdmin,

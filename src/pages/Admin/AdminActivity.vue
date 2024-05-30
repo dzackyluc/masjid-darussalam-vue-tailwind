@@ -1,23 +1,25 @@
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted } from "vue";
 import Editor from "@tinymce/tinymce-vue";
 
 const Activitys = ref([]);
 const newActivity = ref({
   title: "",
   description: "",
-  url: "",
-  image: null,
+  start_date: "",
+  end_date: "",
 });
 
-const getImagePath = (folder,imagePath) => {
-  return import.meta.env.VITE_BASE_IMG_URL + folder+ '/'+imagePath;
-};
+// const getImagePath = (folder,imagePath) => {
+//   return import.meta.env.VITE_BASE_IMG_URL + folder+ '/'+imagePath;
+// };
 
 const fetchActivitys = async () => {
   try {
-    const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/activity`);
+    const response = await fetch(
+      `${import.meta.env.VITE_BASE_URL}/api/activity`
+    );
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
@@ -31,24 +33,33 @@ const fetchActivitys = async () => {
 const handleFileUpload = (event) => {
   newActivity.value.image = event.target.files[0];
 };
-const token = '4|UScdEMUD4dozKsogjlBtatrq5xBpga2yjSBL07kx7d030af8'; // Replace with your actual token, or retrieve it from storage
-// const token = localStorage.getItem('token'); // Example if stored in localStorage
+const token = "4|UScdEMUD4dozKsogjlBtatrq5xBpga2yjSBL07kx7d030af8";
 
 const addActivity = async () => {
-  const formData = new FormData();
-  formData.append("title", newActivity.value.title);
-  formData.append("content", newActivity.value.description);
-  formData.append("type", "kegiatan");
-  formData.append("thumbnail", newActivity.value.image);
-
   try {
-    const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/activity`, {
-      method: "POST",
-      body: formData,
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      },
+    const myHeaders = new Headers();
+    myHeaders.append("Accept", "application/json");
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", "Bearer " + token);
+
+    const raw = JSON.stringify({
+      title: newActivity.value.title,
+      description: newActivity.value.description,
+      start_date: newActivity.value.start_date,
+      end_date: newActivity.value.end_date,
     });
+
+    const requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    const response = await fetch(
+      `${import.meta.env.VITE_BASE_URL}/api/activity`,
+      requestOptions
+    );
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
@@ -62,16 +73,21 @@ const addActivity = async () => {
 
 const deleteActivity = async (ActivityId) => {
   try {
-    const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/blog/${blogId}`, {
-      method: "DELETE",
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      },
-    });
+    const response = await fetch(
+      `${import.meta.env.VITE_BASE_URL}/api/activity/${ActivityId}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
-    Activitys.value = Activitys.value.filter((Activity) => Activity.id !== ActivityId);
+    Activitys.value = Activitys.value.filter(
+      (Activity) => Activity.id !== ActivityId
+    );
   } catch (error) {
     console.error("There was a problem deleting the Activity:", error);
   }
@@ -81,13 +97,13 @@ const resetForm = () => {
   newActivity.value = {
     title: "",
     description: "",
-    url: "",
-    image: null,
+    start_date: "",
+    end_date: "",
   };
   document.getElementById("formFile").value = null;
 };
 
-onMounted(fetchBlogs);
+onMounted(fetchActivitys);
 </script>
 
 
@@ -112,33 +128,35 @@ onMounted(fetchBlogs);
   <div class="col-12 col-lg-12">
     <div class="row">
       <div class="col-lg-6">
-     
-
         <div class="d-flex flex-wrap gap-5">
-
-               <div
-          class="d-flex flex-wrap"
-          v-for="Activity in Activitys"
-          :key="Activity.id"
-        >
-          <div class="card" style="width: 18rem">
-            <img
-              class="card-img-top"
-              :src="getImagePath('Activity', Activity.thumbnail)"
-              alt="Card image cap"
-            />
-            <div class="card-body">
-              <h5 class="card-title">{{ Activity.title }}</h5>
-
-              <br />
-              <br />
-              <div class="d-flex justify-content-end gap-2">
-                <button class="btn btn-primary block">Edit</button>
-                <button @click="deleteActivity(Activity.id)" class="btn btn-primary block">Hapus</button>
+          <div
+            class="d-flex flex-wrap"
+            v-for="Activity in Activitys"
+            :key="Activity.id"
+          >
+            <div class="card" style="width: 18rem">
+              <div class="card-body">
+                <h5 class="card-title">{{ Activity.title }}</h5>
+                <p class="card-description">{{ Activity.description }}</p>
+                <br />
+                <br />
+                <div class="d-flex justify-content-end gap-2">
+                  <button
+                    @click="editActivity(Activity)"
+                    class="btn btn-primary block"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    @click="deleteActivity(Activity.id)"
+                    class="btn btn-primary block"
+                  >
+                    Hapus
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
         </div>
       </div>
 
@@ -154,20 +172,37 @@ onMounted(fetchBlogs);
                 <form @submit.prevent="addActivity">
                   <div class="form-group">
                     <input
+                      v-model="newActivity.title"
+                      type="text"
                       class="form-control"
-                      type="file"
-                      @change="handleFileUpload"
+                      placeholder="Judul Kegiatan"
                     />
                   </div>
                   <div class="form-group">
                     <input
-                      v-model="newActivity.title"
+                      v-model="newActivity.description"
                       type="text"
                       class="form-control"
-                      placeholder="Judul Activity"
+                      placeholder="Deskripsi Kegiatan"
                     />
                   </div>
-                  <Editor  v-model="newActivity.description"
+                  <div class="form-group">
+                    <input
+                      v-model="newActivity.start_date"
+                      type="datetime-local"
+                      class="form-control"
+                      placeholder=""
+                    />
+                  </div>
+                  <div class="form-group">
+                    <input
+                      v-model="newActivity.end_date"
+                      type="datetime-local"
+                      class="form-control"
+                      placeholder=""
+                    />
+                  </div>
+                  <!-- <Editor  v-model="newActivity.description"
                     api-key="okc1krocsefjl2o7r6w7lhme6h85v46r85b1iar6x1m1rdn1"
                     :init="{
                       toolbar_mode: 'sliding',
@@ -177,10 +212,9 @@ onMounted(fetchBlogs);
                         'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
                     }"
                     initial-value="Welcome to TinyMCE!"
-                  />
+                  /> -->
 
                   <div class="form-group">
-                   
                     <button
                       class="btn btn-primary block"
                       style="margin-top: 0.5rem; width: 100%"

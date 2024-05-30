@@ -1,6 +1,6 @@
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted } from "vue";
 import Editor from "@tinymce/tinymce-vue";
 
 const blogs = ref([]);
@@ -11,8 +11,8 @@ const newBlog = ref({
   image: null,
 });
 
-const getImagePath = (folder,imagePath) => {
-  return import.meta.env.VITE_BASE_IMG_URL + folder+ '/'+imagePath;
+const getImagePath = (folder, imagePath) => {
+  return import.meta.env.VITE_BASE_IMG_URL + folder + "/" + imagePath;
 };
 
 const fetchBlogs = async () => {
@@ -31,7 +31,7 @@ const fetchBlogs = async () => {
 const handleFileUpload = (event) => {
   newBlog.value.image = event.target.files[0];
 };
-const token = '4|UScdEMUD4dozKsogjlBtatrq5xBpga2yjSBL07kx7d030af8'; // Replace with your actual token, or retrieve it from storage
+const token = "4|UScdEMUD4dozKsogjlBtatrq5xBpga2yjSBL07kx7d030af8"; // Replace with your actual token, or retrieve it from storage
 // const token = localStorage.getItem('token'); // Example if stored in localStorage
 
 const addBlog = async () => {
@@ -46,7 +46,7 @@ const addBlog = async () => {
       method: "POST",
       body: formData,
       headers: {
-        'Authorization': `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
     });
     if (!response.ok) {
@@ -62,12 +62,15 @@ const addBlog = async () => {
 
 const deleteBlog = async (blogId) => {
   try {
-    const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/blog/${blogId}`, {
-      method: "DELETE",
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      },
-    });
+    const response = await fetch(
+      `${import.meta.env.VITE_BASE_URL}/api/blog/${blogId}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
@@ -112,33 +115,31 @@ onMounted(fetchBlogs);
   <div class="col-12 col-lg-12">
     <div class="row">
       <div class="col-lg-6">
-     
-
         <div class="d-flex flex-wrap gap-5">
+          <div class="d-flex flex-wrap" v-for="blog in blogs" :key="blog.id">
+            <div class="card" style="width: 18rem">
+              <img
+                class="card-img-top"
+                :src="getImagePath('blog', blog.thumbnail)"
+                alt="Card image cap"
+              />
+              <div class="card-body">
+                <h5 class="card-title">{{ blog.title }}</h5>
 
-               <div
-          class="d-flex flex-wrap"
-          v-for="blog in blogs"
-          :key="blog.id"
-        >
-          <div class="card" style="width: 18rem">
-            <img
-              class="card-img-top"
-              :src="getImagePath('blog', blog.thumbnail)"
-              alt="Card image cap"
-            />
-            <div class="card-body">
-              <h5 class="card-title">{{ blog.title }}</h5>
-
-              <br />
-              <br />
-              <div class="d-flex justify-content-end gap-2">
-                <button class="btn btn-primary block">Edit</button>
-                <button @click="deleteBlog(blog.id)" class="btn btn-primary block">Hapus</button>
+                <br />
+                <br />
+                <div class="d-flex justify-content-end gap-2">
+                  <button class="btn btn-primary block">Edit</button>
+                  <button
+                    @click="deleteBlog(blog.id)"
+                    class="btn btn-primary block"
+                  >
+                    Hapus
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
         </div>
       </div>
 
@@ -167,7 +168,8 @@ onMounted(fetchBlogs);
                       placeholder="Judul Blog"
                     />
                   </div>
-                  <Editor  v-model="newBlog.description"
+                  <Editor
+                    v-model="newBlog.description"
                     api-key="okc1krocsefjl2o7r6w7lhme6h85v46r85b1iar6x1m1rdn1"
                     :init="{
                       toolbar_mode: 'sliding',
@@ -180,7 +182,6 @@ onMounted(fetchBlogs);
                   />
 
                   <div class="form-group">
-                   
                     <button
                       class="btn btn-primary block"
                       style="margin-top: 0.5rem; width: 100%"
