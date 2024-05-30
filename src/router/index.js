@@ -6,7 +6,7 @@ const Zakat = () => import('../pages/Zakat.vue');
 const AdminIndex = () => import('../pages/Admin/AdminIndex.vue');
 const AdminDashboard = () => import('../pages/Admin/AdminDashboard.vue');
 const BlogAdmin = () => import('../pages/Admin/AdminBlog.vue');
-// const ActivitiesAdmin = () => import('../pages/admin/Activities.vue');
+const ActivitiesAdmin = () => import('../pages/Admin/AdminActivity.vue');
 // const ReservasiAdmin = () => import('../pages/admin/Reservasi.vue');
 // const ZakatAdmin = () => import('../pages/admin/Zakat.vue');
 // const InfaqAdmin = () => import('../pages/admin/Infaq.vue');
@@ -40,10 +40,10 @@ const router = createRouter({
                     path: 'blogs',
                     component: BlogAdmin,
                 },
-                // {
-                //     path: 'activities',
-                //     component: ActivitiesAdmin,
-                // },
+                {
+                    path: 'activities',
+                    component: ActivitiesAdmin,
+                },
                 // {
                 //     path: 'reservasi',
                 //     component: ReservasiAdmin,
