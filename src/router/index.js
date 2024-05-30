@@ -2,7 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router';
 
 const Index = () => import('../pages/Index.vue');
 const About = () => import('../pages/About.vue');
-const Zakat = () => import('../pages/Zakat.vue');
+const Zakat = () => import('../pages/laporanZakat.vue');
+const Infaq = () => import('../pages/laporanInfaq.vue');
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -16,9 +17,14 @@ const router = createRouter({
             component: About,
         },
         {
-            path: '/zakat',
+            path: '/laporanzakat',
             component: Zakat,
         },
+        {
+            path: '/laporaninfaq',
+            component: Infaq,
+        },
+        
     ]
 });
 
