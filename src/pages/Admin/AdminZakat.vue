@@ -1,0 +1,127 @@
+<script setup>
+import { ref, onMounted } from "vue";
+import Editor from "@tinymce/tinymce-vue";
+import DataTable from 'datatables.net-bs5';
+// import "datatables.net-dt/css/jquery.dataTables.css";
+import $ from 'jquery';
+
+const Zakat = ref([]);
+const newZakat = ref({
+  title: "",
+  description: "",
+  start_date: "",
+  end_date: "",
+});
+
+const fetchZakat = async () => {
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_BASE_URL}/api/zakat`
+    );
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    const data = await response.json();
+    Zakat.value = data.data.data;
+
+    // Initialize DataTable after fetching data
+    initializeDataTable();
+  } catch (error) {
+    console.error("There was a problem fetching the Zakat:", error);
+  }
+};
+
+
+const initializeDataTable = () => {
+  $(document).ready(function () {
+    $('#dataTable').DataTable();
+  });
+};
+
+onMounted(fetchZakat);
+</script>
+
+<template>
+ <header class="mb-3">
+                <a href="#" class="burger-btn d-block d-xl-none">
+                    <i class="bi bi-justify fs-3"></i>
+                </a>
+            </header>
+            <div class="page-title">
+                <div class="row">
+                    <div class="col-12 col-md-6 order-md-2 order-first">
+                        <nav aria-label="breadcrumb" class="breadcrumb-header float-start">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">zakat</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid">
+                        <div class="mb-4 card">
+                            <div class="card-header">
+                                <h1 class="mt-4" style="float: left;">Laporan zakat</h1>
+                                <h3 style="float: right; margin-top: 2.5rem;">Total : Rp3.000.000</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Muzakki</th>
+                                                <th>Gender</th>
+                                                <th>Tanggal</th>
+                                                <th>Amil</th>
+                                                <th>Jenis</th>
+                                                <th>Pembayaran</th>
+                                                <th>Jumlah</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="(zakat, index) in Zakat" :key="zakat.id">
+                                                <td>{{ index + 1 }}</td>
+                                                <td>{{ zakat.name }}</td>
+                                                <td>{{ zakat.gender }}</td>
+                                                <td>{{ zakat.date }}</td>
+                                                <td>{{ zakat.input_by }}</td>
+                                                <td>{{ zakat.payment }}</td>
+                                                <td>{{ zakat.amount }}</td>
+                                                <td>
+                                                    <button @click="EditZakat(zakat.id)">Edit</button>
+                                                    <button @click="deleteZakat(zakat.id)">Delete</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                      <div class="d-flex justify-content-end gap-3">
+                          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                            Request
+                        </button>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                            Print
+                        </button>
+                      </div>
+                    </div>
+                </main>
+            </div>
+</template>
+
+<style scoped>
+@media (min-width: 1024px) {
+  #sample {
+    display: flex;
+    flex-direction: column;
+    place-items: center;
+    width: 100%;
+  }
+}
+</style>

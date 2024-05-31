@@ -11,7 +11,7 @@ const AdminDashboard = () => import('../pages/Admin/AdminDashboard.vue');
 const BlogAdmin = () => import('../pages/Admin/AdminBlog.vue');
 const ActivitiesAdmin = () => import('../pages/Admin/AdminActivity.vue');
 // const ReservasiAdmin = () => import('../pages/admin/Reservasi.vue');
-// const ZakatAdmin = () => import('../pages/admin/Zakat.vue');
+const ZakatAdmin = () => import('../pages/Admin/AdminZakat.vue');
 
 const Login = () => import('../pages/Auth/Login.vue');
 const Register = () => import('../pages/Auth/Register.vue');
@@ -71,7 +71,7 @@ const router = createRouter({
                 },
                 {
                     path: 'zakat',
-                    component: Zakat,
+                    component: ZakatAdmin,
                     meta: { requiresAuth: true },
                 },
                 {

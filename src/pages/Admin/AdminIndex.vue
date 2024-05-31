@@ -83,14 +83,24 @@
                 <span>Dashboard</span>
               </router-link>
             </li>
-
-            <li class="sidebar-item">
-              <a href="infaq.html" class="sidebar-link">
+            <li
+              class="sidebar-item"
+              :class="{ active: $route.path === '/admin/zakat' }"
+            >
+              <router-link :to="'/admin/zakat'" class="sidebar-link">
+                <i class="bi bi-person-circle"></i>
+                <span>Zakat</span>
+              </router-link>
+            </li>
+            <li
+              class="sidebar-item"
+              :class="{ active: $route.path === '/admin/infaq' }"
+            >
+              <router-link :to="'/admin/infaq'" class="sidebar-link">
                 <i class="bi bi-cash"></i>
                 <span>Infaq</span>
-              </a>
+              </router-link>
             </li>
-
             <li
               class="sidebar-item"
               :class="{ active: $route.path === '/admin/activities' }"

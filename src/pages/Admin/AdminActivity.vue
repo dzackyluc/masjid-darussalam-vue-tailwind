@@ -1,10 +1,8 @@
-
 <script setup>
 import { ref, onMounted } from "vue";
 import Editor from "@tinymce/tinymce-vue";
 
 const token = localStorage.getItem("authToken");
-
 
 const Activitys = ref([]);
 const newActivity = ref({
@@ -13,10 +11,8 @@ const newActivity = ref({
   start_date: "",
   end_date: "",
 });
-
-// const getImagePath = (folder,imagePath) => {
-//   return import.meta.env.VITE_BASE_IMG_URL + folder+ '/'+imagePath;
-// };
+const isEditing = ref(false);
+const currentActivityId = ref(null);
 
 const fetchActivitys = async () => {
   try {
@@ -38,7 +34,59 @@ const handleFileUpload = (event) => {
 };
 
 const addActivity = async () => {
+  if (isEditing.value) {
+    updateActivity();
+  } else {
+    try {
+      const myHeaders = new Headers();
+      myHeaders.append("Accept", "application/json");
+      myHeaders.append("Content-Type", "application/json");
+      myHeaders.append("Authorization", "Bearer " + token);
+
+      const raw = JSON.stringify({
+        title: newActivity.value.title,
+        description: newActivity.value.description,
+        start_date: newActivity.value.start_date,
+        end_date: newActivity.value.end_date,
+      });
+
+      const requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow",
+      };
+
+      const response = await fetch(
+        `${import.meta.env.VITE_BASE_URL}/api/activity`,
+        requestOptions
+      );
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      Activitys.value.push(data.data);
+      resetForm();
+    } catch (error) {
+      console.error("There was a problem adding the activity:", error);
+    }
+  }
+};
+
+const editActivity = (activity) => {
+  isEditing.value = true;
+  currentActivityId.value = activity.id;
+  newActivity.value = {
+    title: activity.title,
+    description: activity.description,
+    start_date: activity.start_date,
+    end_date: activity.end_date,
+  };
+};
+
+const updateActivity = async () => {
   try {
+    console.log("Updating activity with ID:", currentActivityId.value); // Debugging ID
     const myHeaders = new Headers();
     myHeaders.append("Accept", "application/json");
     myHeaders.append("Content-Type", "application/json");
@@ -51,6 +99,8 @@ const addActivity = async () => {
       end_date: newActivity.value.end_date,
     });
 
+    console.log("Payload:", raw); // Debugging payload
+
     const requestOptions = {
       method: "POST",
       headers: myHeaders,
@@ -59,17 +109,20 @@ const addActivity = async () => {
     };
 
     const response = await fetch(
-      `${import.meta.env.VITE_BASE_URL}/api/activity`,
+      `${import.meta.env.VITE_BASE_URL}/api/activity/${currentActivityId.value}`,
       requestOptions
     );
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
     const data = await response.json();
-    Activitys.value.push(data.data);
+    console.log("Response data:", data); // Debugging response
+
+    const index = Activitys.value.findIndex(activity => activity.id === currentActivityId.value);
+    Activitys.value[index] = data.data;
     resetForm();
   } catch (error) {
-    console.error("There was a problem adding the blog:", error);
+    console.error("There was a problem updating the activity:", error);
   }
 };
 
@@ -102,15 +155,15 @@ const resetForm = () => {
     start_date: "",
     end_date: "",
   };
-  document.getElementById("formFile").value = null;
+  isEditing.value = false;
+  currentActivityId.value = null;
 };
 
 onMounted(fetchActivitys);
 </script>
 
-
 <template>
-  <header claszs="mb-3">
+  <header class="mb-3">
     <a href="#" class="burger-btn d-block d-xl-none">
       <i class="bi bi-justify fs-3"></i>
     </a>
@@ -130,9 +183,9 @@ onMounted(fetchActivitys);
   <div class="col-12 col-lg-12">
     <div class="row">
       <div class="col-lg-6">
-        <div class="d-flex flex-wrap gap-5">
+        <div class="d-flex flex-wrap gap-2">
           <div
-            class="d-flex flex-wrap"
+            class="d-flex flex-wrap"  
             v-for="Activity in Activitys"
             :key="Activity.id"
           >
@@ -145,13 +198,13 @@ onMounted(fetchActivitys);
                 <div class="d-flex justify-content-end gap-2">
                   <button
                     @click="editActivity(Activity)"
-                    class="btn btn-primary block"
+                    class="btn btn-primary rounded-[15px] block"
                   >
                     Edit
                   </button>
                   <button
                     @click="deleteActivity(Activity.id)"
-                    class="btn btn-primary block"
+                    class="btn btn-danger rounded-[15px] block"
                   >
                     Hapus
                   </button>
@@ -166,7 +219,7 @@ onMounted(fetchActivitys);
         <section class="section">
           <div class="card">
             <div class="card-header">
-              <h2 class="card-title">Add Activity</h2>
+              <h2 class="card-title">{{ isEditing ? 'Edit Activity' : 'Add Activity' }}</h2>
             </div>
 
             <div class="card-body">
@@ -204,24 +257,21 @@ onMounted(fetchActivitys);
                       placeholder=""
                     />
                   </div>
-                  <!-- <Editor  v-model="newActivity.description"
-                    api-key="okc1krocsefjl2o7r6w7lhme6h85v46r85b1iar6x1m1rdn1"
-                    :init="{
-                      toolbar_mode: 'sliding',
-                      plugins:
-                        'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
-                      toolbar:
-                        'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
-                    }"
-                    initial-value="Welcome to TinyMCE!"
-                  /> -->
-
                   <div class="form-group">
                     <button
                       class="btn btn-primary block"
                       style="margin-top: 0.5rem; width: 100%"
                     >
-                      Tambah
+                      {{ isEditing ? 'Update' : 'Tambah' }}
+                    </button>
+                    <button
+                      type="button"
+                      @click="resetForm"
+                      v-if="isEditing"
+                      class="btn btn-secondary block"
+                      style="margin-top: 0.5rem; width: 100%"
+                    >
+                      Cancel
                     </button>
                   </div>
                 </form>
@@ -233,7 +283,6 @@ onMounted(fetchActivitys);
     </div>
   </div>
 </template>
-
 
 
 
