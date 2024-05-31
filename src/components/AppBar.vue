@@ -16,7 +16,7 @@ import Toolbar from 'primevue/toolbar';
                 <button class="font-light text-green-700 px-4 hover:underline">
                     Layanan <i class="pi pi-chevron-down"></i>
                 </button>
-                <div @mouseover="isOpen = true" @mouseleave="isOpen = false" v-show="isOpen" class="absolute right-5 bg-green-800 border border-gray-300 rounded shadow-md">
+                <div v-show="isOpen" class="absolute bg-green-800 border border-gray-300 rounded shadow-md z-50" @mouseover="isOpen = true" @mouseleave="isOpen = false">
                     <button class="block w-full px-3 py-2 text-sm text-center text-white hover:bg-gray-300 hover:text-black" @click="this.$router.push('/infaq')">Infaq</button>
                     <button class="block w-full px-3 py-2 text-sm text-center text-white hover:bg-gray-300 hover:text-black" @click="this.$router.push('/zakat')">Zakat</button>
                     <button class="block w-full px-3 py-2 text-sm text-center text-white hover:bg-gray-300 hover:text-black" @click="this.$router.push('/reservasi')">Reservasi</button>
