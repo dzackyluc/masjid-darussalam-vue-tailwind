@@ -1,21 +1,26 @@
 <script setup>
+
 import { ref, onMounted } from "vue";
-import Editor from "@tinymce/tinymce-vue";
 import DataTable from 'datatables.net-bs5';
 import $ from 'jquery';
 
-
 const token = localStorage.getItem("authToken");
 
-const Activitys = ref([]);
-const newActivity = ref({
+const Infaq = ref([]);
+const newInfaq = ref({
   title: "",
-  description: "",
-  start_date: "",
-  end_date: "",
+  amount: "",
+  description: ""
 });
 
-const fetchActivitys = async () => {
+const showCreateModal = ref(true);
+
+const showModal = () => {
+  
+  showCreateModal.value = true;
+}
+
+const fetchInfaq = async () => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_BASE_URL}/api/infaq`
@@ -24,19 +29,16 @@ const fetchActivitys = async () => {
       throw new Error("Network response was not ok");
     }
     const data = await response.json();
-    Activitys.value = data.data.data;
+    Infaq.value = data.data.data;
 
     // Initialize DataTable after fetching data
     initializeDataTable();
   } catch (error) {
-    console.error("There was a problem fetching the Activitys:", error);
+    console.error("There was a problem fetching the Infaq:", error);
   }
 };
 
-const handleFileUpload = (event) => {
-  newActivity.value.image = event.target.files[0];
-};
-const addActivity = async () => {
+const addInfaq = async () => {
   try {
     const myHeaders = new Headers();
     myHeaders.append("Accept", "application/json");
@@ -44,10 +46,9 @@ const addActivity = async () => {
     myHeaders.append("Authorization", "Bearer " + token);
 
     const raw = JSON.stringify({
-      title: newActivity.value.title,
-      description: newActivity.value.description,
-      start_date: newActivity.value.start_date,
-      end_date: newActivity.value.end_date,
+      title: newInfaq.value.title,
+      description: newInfaq.value.description,
+      amount: newInfaq.value.amount
     });
 
     const requestOptions = {
@@ -58,24 +59,25 @@ const addActivity = async () => {
     };
 
     const response = await fetch(
-      `${import.meta.env.VITE_BASE_URL}/api/activity`,
+      `${import.meta.env.VITE_BASE_URL}/api/infaq`,
       requestOptions
     );
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
     const data = await response.json();
-    Activitys.value.push(data.data);
+    Infaq.value.push(data.data);
     resetForm();
+    showCreateModal.value = false;
   } catch (error) {
-    console.error("There was a problem adding the blog:", error);
+    console.error("There was a problem adding the infaq:", error);
   }
 };
 
-const deleteActivity = async (ActivityId) => {
+const deleteInfaq = async (InfaqId) => {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_BASE_URL}/api/activity/${ActivityId}`,
+      `${import.meta.env.VITE_BASE_URL}/api/infaq/${InfaqId}`,
       {
         method: "DELETE",
         headers: {
@@ -86,22 +88,12 @@ const deleteActivity = async (ActivityId) => {
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
-    Activitys.value = Activitys.value.filter(
-      (Activity) => Activity.id !== ActivityId
+    Infaq.value = Infaq.value.filter(
+      (Infaq) => Infaq.id !== InfaqId
     );
   } catch (error) {
-    console.error("There was a problem deleting the Activity:", error);
+    console.error("There was a problem deleting the Infaq:", error);
   }
-};
-
-const resetForm = () => {
-  newActivity.value = {
-    title: "",
-    description: "",
-    start_date: "",
-    end_date: "",
-  };
-  document.getElementById("formFile").value = null;
 };
 
 const initializeDataTable = () => {
@@ -110,7 +102,15 @@ const initializeDataTable = () => {
   });
 };
 
-onMounted(fetchActivitys);
+const resetForm = () => {
+  newInfaq.value = {
+    title: "",
+    amount: "",
+    description: ""
+  };
+};
+
+onMounted(fetchInfaq);
 </script>
 
 <template>
@@ -134,41 +134,68 @@ onMounted(fetchActivitys);
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid">
-                        <div class="mb-4 card">
+                      <div class="mb-4 card">
                             <div class="card-header">
                                 <h1 class="mt-4" style="float: left;">Laporan Infaq</h1>
                                 <h3 style="float: right; margin-top: 2.5rem;">Total : Rp3.000.000</h3>
                             </div>
                             <div class="card-body">
+                                <button class="btn btn-primary mb-3" @click="showModal()">Tambah Infaq</button>
                                 <div class="table-responsive">
                                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                         <thead>
                                             <tr>
                                                 <th>No</th>
-                                                <th>Nama</th>
-                                                <th>Gender</th>
                                                 <th>Tanggal</th>
                                                 <th>Penginput</th>
                                                 <th>Pembayaran</th>
-                                                <th>Jumlah</th>
-                                                <th>Edit</th>
+                                                <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr v-for="(activity, index) in Activitys" :key="activity.id">
+                                            <tr v-for="(infaq, index) in Infaq" :key="infaq.id">
                                                 <td>{{ index + 1 }}</td>
-                                                <td>{{ activity.name }}</td>
-                                                <td>{{ activity.gender }}</td>
-                                                <td>{{ activity.date }}</td>
-                                                <td>{{ activity.input_by }}</td>
-                                                <td>{{ activity.payment }}</td>
-                                                <td>{{ activity.amount }}</td>
+                                                <td>{{ infaq.date }}</td>
+                                                <td>{{ infaq.user.name }}</td>
+                                                <td>{{ infaq.amount }}</td>
                                                 <td>
-                                                    <button @click="deleteActivity(activity.id)">Delete</button>
+                                                    <button @click="deleteInfaq(infaq.id)">Delete</button>
                                                 </td>
                                             </tr>
                                         </tbody>
                                     </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Modal Create -->
+                        <div v-if="showCreateModal" class="modal" tabindex="-1" role="dialog">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Tambah Infaq</h5>
+                                        <button type="button" class="close" @click="showCreateModal = false" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <label for="title">Title</label>
+                                            <input type="text" class="form-control" v-model="newInfaq.title" id="title" placeholder="Enter title">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="amount">Amount</label>
+                                            <input type="number" class="form-control" v-model="newInfaq.amount" id="amount" placeholder="Enter amount">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="description">Description</label>
+                                            <textarea class="form-control" v-model="newInfaq.description" id="description" placeholder="Enter description"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" @click="showCreateModal = false">Close</button>
+                                        <button type="button" class="btn btn-primary" @click="addInfaq">Save changes</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
