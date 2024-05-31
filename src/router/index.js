@@ -52,6 +52,7 @@ const router = createRouter({
         {
             path: '/admin',
             component: AdminIndex,
+            meta: { requiresAuth: true },
             children: [
                 {
                     path: 'dashboard',
@@ -78,21 +79,6 @@ const router = createRouter({
                     component: InfaqAdmin,
                     meta: { requiresAuth: true },
                 }
-                
-                // {
-                //     path: 'reservasi',
-                //     component: ReservasiAdmin,
-                // },
-                // {
-                //     path: 'zakat',
-                //     component: ZakatAdmin,
-                // },
-                // {
-                //     path: 'infaq',
-                //     component: InfaqAdmin,
-                // },
-
-
             ]
         }
     ]
