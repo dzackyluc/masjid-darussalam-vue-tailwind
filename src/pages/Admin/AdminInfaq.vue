@@ -1,8 +1,13 @@
-<script setup>
 
+<script setup>
 import { ref, onMounted } from "vue";
-import DataTable from 'datatables.net-bs5';
-import $ from 'jquery';
+import DataTablesCore from "datatables.net-bs5";
+import $ from "jquery";
+import DataTable from "datatables.net-vue3";
+import Modal from "../../components/Modal.vue";
+import Swal from "sweetalert2";
+
+DataTable.use(DataTablesCore);
 
 const token = localStorage.getItem("authToken");
 
@@ -10,45 +15,37 @@ const Infaq = ref([]);
 const newInfaq = ref({
   title: "",
   amount: "",
-  description: ""
 });
 
-const showCreateModal = ref(true);
-
-const showModal = () => {
-  
-  showCreateModal.value = true;
-}
+const isModalVisible = ref(false);
 
 const fetchInfaq = async () => {
   try {
-    const response = await fetch(
-      `${import.meta.env.VITE_BASE_URL}/api/infaq`
-    );
+    const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/infaq`);
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
     const data = await response.json();
-    Infaq.value = data.data.data;
 
-    // Initialize DataTable after fetching data
-    initializeDataTable();
+    console.log("INI DATAAAAA");
+    console.log(data.data.data);
+    Infaq.value = data.data.data;
   } catch (error) {
     console.error("There was a problem fetching the Infaq:", error);
   }
 };
 
 const addInfaq = async () => {
+  Swal.showLoading();
+
   try {
     const myHeaders = new Headers();
-    myHeaders.append("Accept", "application/json");
-    myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Authorization", "Bearer " + token);
-
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Accept", "application/json");
     const raw = JSON.stringify({
       title: newInfaq.value.title,
-      description: newInfaq.value.description,
-      amount: newInfaq.value.amount
+      amount: newInfaq.value.amount,
     });
 
     const requestOptions = {
@@ -65,16 +62,23 @@ const addInfaq = async () => {
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
-    const data = await response.json();
-    Infaq.value.push(data.data);
+    fetchInfaq();
+    Swal.close();
+    Swal.fire({
+      icon: "success",
+      title: "Berhasil",
+      text: "Data Infaq berhasil ditambahkan",
+    });
     resetForm();
-    showCreateModal.value = false;
+    isModalVisible.value = false;
   } catch (error) {
     console.error("There was a problem adding the infaq:", error);
   }
 };
 
 const deleteInfaq = async (InfaqId) => {
+  Swal.showLoading();
+
   try {
     const response = await fetch(
       `${import.meta.env.VITE_BASE_URL}/api/infaq/${InfaqId}`,
@@ -88,9 +92,8 @@ const deleteInfaq = async (InfaqId) => {
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
-    Infaq.value = Infaq.value.filter(
-      (Infaq) => Infaq.id !== InfaqId
-    );
+    fetchInfaq();
+    Swal.close();
   } catch (error) {
     console.error("There was a problem deleting the Infaq:", error);
   }
@@ -98,7 +101,7 @@ const deleteInfaq = async (InfaqId) => {
 
 const initializeDataTable = () => {
   $(document).ready(function () {
-    $('#dataTable').DataTable();
+    $("#dataTable").DataTable();
   });
 };
 
@@ -106,110 +109,185 @@ const resetForm = () => {
   newInfaq.value = {
     title: "",
     amount: "",
-    description: ""
   };
 };
 
-onMounted(fetchInfaq);
+const formatCurrency = (value) => {
+   return new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+      }).format(value);
+};
+
+const cc = [
+  {
+    data: "id",
+    render: (data, type, row, meta) => {
+      return meta.row + 1;
+    },
+  },
+  {
+    data: "title",
+    render: (data) => {
+      return data;
+    },
+  },
+  {
+    data: "created_at",
+    render: (data) => {
+      return new Date(data).toLocaleDateString();
+    },
+  },
+  {
+    data: "user.name",
+    render: (data) => {
+      return data;
+    },
+  },
+  {
+    data: "amount",
+    render: (data) => {
+      return `${formatCurrency(data)}`;
+    },
+  },
+  {
+    data: "id",
+    render: (data) => {
+      return `
+        <button class="btn btn-danger delete" data-id="${data}">Delete</button>
+      `;
+    },
+  },
+];
+
+onMounted(() => {
+  fetchInfaq();
+  $("#dataTable").on("click", ".delete", function () {
+    const InfaqId = $(this).data("id");
+    deleteInfaq(InfaqId);
+  });
+  initializeDataTable();
+});
+
+const showModal = () => {
+  isModalVisible.value = true;
+};
 </script>
 
-<template>
- <header class="mb-3">
-                <a href="#" class="burger-btn d-block d-xl-none">
-                    <i class="bi bi-justify fs-3"></i>
-                </a>
-            </header>
-            <div class="page-title">
-                <div class="row">
-                    <div class="col-12 col-md-6 order-md-2 order-first">
-                        <nav aria-label="breadcrumb" class="breadcrumb-header float-start">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Infaq</li>
-                            </ol>
-                        </nav>
-                    </div>
-                </div>
-            </div>
-            <div id="layoutSidenav_content">
-                <main>
-                    <div class="container-fluid">
-                      <div class="mb-4 card">
-                            <div class="card-header">
-                                <h1 class="mt-4" style="float: left;">Laporan Infaq</h1>
-                                <h3 style="float: right; margin-top: 2.5rem;">Total : Rp3.000.000</h3>
-                            </div>
-                            <div class="card-body">
-                                <button class="btn btn-primary mb-3" @click="showModal()">Tambah Infaq</button>
-                                <div class="table-responsive">
-                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                        <thead>
-                                            <tr>
-                                                <th>No</th>
-                                                <th>Tanggal</th>
-                                                <th>Penginput</th>
-                                                <th>Pembayaran</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr v-for="(infaq, index) in Infaq" :key="infaq.id">
-                                                <td>{{ index + 1 }}</td>
-                                                <td>{{ infaq.date }}</td>
-                                                <td>{{ infaq.user.name }}</td>
-                                                <td>{{ infaq.amount }}</td>
-                                                <td>
-                                                    <button @click="deleteInfaq(infaq.id)">Delete</button>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
 
-                        <!-- Modal Create -->
-                        <div v-if="showCreateModal" class="modal" tabindex="-1" role="dialog">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">Tambah Infaq</h5>
-                                        <button type="button" class="close" @click="showCreateModal = false" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="form-group">
-                                            <label for="title">Title</label>
-                                            <input type="text" class="form-control" v-model="newInfaq.title" id="title" placeholder="Enter title">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="amount">Amount</label>
-                                            <input type="number" class="form-control" v-model="newInfaq.amount" id="amount" placeholder="Enter amount">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="description">Description</label>
-                                            <textarea class="form-control" v-model="newInfaq.description" id="description" placeholder="Enter description"></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" @click="showCreateModal = false">Close</button>
-                                        <button type="button" class="btn btn-primary" @click="addInfaq">Save changes</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                      <div class="d-flex justify-content-end gap-3">
-                          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-                            Request
-                        </button>
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-                            Print
-                        </button>
-                      </div>
-                    </div>
-                </main>
+<template>
+  <header class="mb-3">
+    <a href="#" class="burger-btn d-block d-xl-none">
+      <i class="bi bi-justify fs-3"></i>
+    </a>
+  </header>
+  <div class="page-title">
+    <div class="row">
+      <div class="col-12 col-md-6 order-md-2 order-first">
+        <nav aria-label="breadcrumb" class="breadcrumb-header float-start">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Infaq</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <div id="layoutSidenav_content">
+    <main>
+      <div class="container-fluid">
+        <div class="mb-4 card">
+          <div class="card-header">
+            <h1 class="mt-4" style="float: left">Laporan Infaq</h1>
+            <h3 style="float: right; margin-top: 2.5rem">
+              Total : Rp3.000.000
+            </h3>
+          </div>
+          <div class="card-body">
+            <button class="btn btn-primary mb-3" @click="showModal">
+              Tambah Infaq
+            </button>
+            <div class="table-responsive">
+              <DataTable
+                id="dataTable"
+                :data="Infaq"
+                :columns="cc"
+                class="display table table-bordered"
+              >
+                <thead>
+                  <tr>
+                    <th>No</th>
+                    <th>Judul</th>
+                    <th>Tanggal</th>
+                    <th>Penginput</th>
+                    <th>Pembayaran</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+              </DataTable>
             </div>
+          </div>
+        </div>
+
+        <Modal
+          title="Buat Data Infaq"
+          :isVisible="isModalVisible"
+          @update:isVisible="isModalVisible = $event"
+        >
+          <form @submit.prevent="addInfaq">
+            <div class="mb-3">
+              <label for="title" style="color: #4e6f52" class="form-label"
+                >Judul</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="title"
+                v-model="newInfaq.title"
+                aria-describedby="emailHelp"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="title" style="color: #4e6f52" class="form-label"
+                >Jumlah</label
+              >
+              <input
+                v-model="newInfaq.amount"
+                type="number"
+                class="form-control"
+                id="amount"
+                aria-describedby="emailHelp"
+              />
+            </div>
+            <div class="d-flex justify-content-end">
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+          </form>
+        </Modal>
+
+        <!-- Modal Create -->
+
+        <div class="d-flex justify-content-end gap-3">
+          <button
+            type="button"
+            class="btn btn-primary"
+            data-toggle="modal"
+            data-target="#myModal"
+          >
+            Request
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            data-toggle="modal"
+            data-target="#myModal"
+          >
+            Print
+          </button>
+        </div>
+      </div>
+    </main>
+  </div>
 </template>
 
 <style scoped>
@@ -222,3 +300,13 @@ onMounted(fetchInfaq);
   }
 }
 </style>
+
+
+
+
+
+
+
+
+
+

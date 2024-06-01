@@ -4,8 +4,8 @@ import { isAuthenticated } from './auth';
 
 const Index = () => import('../pages/Index.vue');
 const About = () => import('../pages/About.vue');
-const Zakat = () => import('../pages/laporanZakat.vue');
-const Infaq = () => import('../pages/laporanInfaq.vue');
+const Zakat = () => import('../pages/Zakat.vue');
+const Infaq = () => import('../pages/Infaq.vue');
 const AdminIndex = () => import('../pages/Admin/AdminIndex.vue');
 const AdminDashboard = () => import('../pages/Admin/AdminDashboard.vue');
 const BlogAdmin = () => import('../pages/Admin/AdminBlog.vue');
@@ -38,11 +38,11 @@ const router = createRouter({
             component: About,
         },
         {
-            path: '/laporanzakat',
+            path: '/zakat',
             component: Zakat,
         },
         {
-            path: '/laporaninfaq',
+            path: '/infaq',
             component: Infaq,
         },
 
@@ -52,6 +52,7 @@ const router = createRouter({
         {
             path: '/admin',
             component: AdminIndex,
+            meta: { requiresAuth: true },
             children: [
                 {
                     path: 'dashboard',
@@ -78,21 +79,6 @@ const router = createRouter({
                     component: InfaqAdmin,
                     meta: { requiresAuth: true },
                 }
-                
-                // {
-                //     path: 'reservasi',
-                //     component: ReservasiAdmin,
-                // },
-                // {
-                //     path: 'zakat',
-                //     component: ZakatAdmin,
-                // },
-                // {
-                //     path: 'infaq',
-                //     component: InfaqAdmin,
-                // },
-
-
             ]
         }
     ]

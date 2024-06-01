@@ -158,6 +158,15 @@ const resetForm = () => {
   isEditing.value = false;
   currentActivityId.value = null;
 };
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
+
+  const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+  const formattedDate = new Intl.DateTimeFormat('en-US', options).format(date);
+
+  const [weekday, day, month, year] = formattedDate.split(" ");
+  return `${weekday} ${day} ${month} ${year}`;
+};
 
 onMounted(fetchActivitys);
 </script>
@@ -192,9 +201,15 @@ onMounted(fetchActivitys);
             <div class="card" style="width: 18rem">
               <div class="card-body">
                 <h5 class="card-title">{{ Activity.title }}</h5>
+                <br />
+
+              <span>{{ formatDate(Activity.start_date) }}</span> <br> <span>{{ formatDate(Activity.end_date) }}</span>
+                    <br />
+                <br />
                 <p class="card-description">{{ Activity.description }}</p>
+            
                 <br />
-                <br />
+
                 <div class="d-flex justify-content-end gap-2">
                   <button
                     @click="editActivity(Activity)"

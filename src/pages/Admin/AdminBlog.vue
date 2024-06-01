@@ -9,7 +9,7 @@ const blogs = ref([]);
 const newBlog = ref({
   id: null,
   title: "",
-  description: "",
+  content: "",
   url: "",
   image: null,
 });
@@ -39,7 +39,7 @@ const handleFileUpload = (event) => {
 const addBlog = async () => {
   const formData = new FormData();
   formData.append("title", newBlog.value.title);
-  formData.append("content", newBlog.value.description);
+  formData.append("content", newBlog.value.content);
   formData.append("type", "blog");
   formData.append("thumbnail", newBlog.value.image);
 
@@ -118,7 +118,7 @@ const resetForm = () => {
   newBlog.value = {
     id: null,
     title: "",
-    description: "",
+    content: "",
     url: "",
     image: null,
   };
@@ -203,7 +203,7 @@ onMounted(fetchBlogs);
                     />
                   </div>
                   <Editor
-                    v-model="newBlog.description"
+                    v-model="newBlog.content"
                     api-key="okc1krocsefjl2o7r6w7lhme6h85v46r85b1iar6x1m1rdn1"
                     :init="{
                       toolbar_mode: 'sliding',
