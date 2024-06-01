@@ -46,6 +46,10 @@ const deleteZakat = async (id) => {
       `${import.meta.env.VITE_BASE_URL}/api/zakat/${id}`,
       {
         method: "DELETE",
+        headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + token,
+              },
       }
     );
     if (!response.ok) {

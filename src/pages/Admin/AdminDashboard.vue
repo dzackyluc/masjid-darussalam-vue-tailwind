@@ -9,7 +9,7 @@
       <section class="row">
         <div class="col-12 col-lg-12">
           <div class="row">
-            <div class="col-12 col-lg-6 col-md-6">
+            <div class="col-12 col-lg-4 col-md-4">
               <div class="card">
                 <div class="card-body px-4 py-4-5">
                   <div class="row">
@@ -17,13 +17,15 @@
                       <h6 class="text-muted font-semibold">
                         <i class="bi bi-people"></i> Zakat
                       </h6>
-                      <h6 class="font-extrabold mb-0">50 Orang</h6>
+                      <h6 class="font-extrabold mb-0">
+                        {{ jumlahZakat }} Orang
+                      </h6>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="col-12 col-lg-6 col-md-6">
+            <div class="col-12 col-lg-4 col-md-4">
               <div class="card">
                 <div class="card-body px-4 py-4-5">
                   <div class="row">
@@ -31,7 +33,25 @@
                       <h6 class="text-muted font-semibold">
                         <i class="bi bi-cash"></i> Infaq
                       </h6>
-                      <h6 class="font-extrabold mb-0">Rp183.000</h6>
+                      <h6 class="font-extrabold mb-0">
+                        {{ formatCurrency(infaqTotal) }}
+                      </h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-lg-4 col-md-4">
+              <div class="card">
+                <div class="card-body px-4 py-4-5">
+                  <div class="row">
+                    <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
+                      <h6 class="text-muted font-semibold">
+                        <i class="bi bi-cash"></i> Zakat
+                      </h6>
+                      <h6 class="font-extrabold mb-0">
+                        {{ formatCurrency(zakatTotal) }}
+                      </h6>
                     </div>
                   </div>
                 </div>
@@ -39,51 +59,52 @@
             </div>
           </div>
         </div>
-        
-
 
         <div class="page-heading">
-        <h4>Blog</h4>
-      </div>
-      <div class="col-12 col-lg-12">
-        <div class="row">
-          <div v-for="blog in blogs" :key="blog.id" class="col-4 col-lg-3 col-md-4">
-            <div class="card" style="width: 15rem">
-              <img :src="getImagePath('blog',blog.thumbnail)" class="card-img-top" alt="Card image cap">
-              <div class="card-body">
-                <h5 class="card-title">{{ blog.title }}</h5>
+          <h4>Blog</h4>
+        </div>
+        <div class="col-12 col-lg-12">
+          <div class="row">
+            <div
+              v-for="blog in blogs"
+              :key="blog.id"
+              class="col-4 col-lg-3 col-md-4"
+            >
+              <div class="card" style="width: 15rem">
+                <img
+                  :src="getImagePath('blog', blog.thumbnail)"
+                  class="card-img-top"
+                  alt="Card image cap"
+                />
+                <div class="card-body">
+                  <h5 class="card-title">{{ blog.title }}</h5>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      
         <div class="page-heading">
           <h4>Kegiatan</h4>
         </div>
-        <div class="col-12 col-lg-12">
-          <div class="row">
-            <div class="col-4 col-lg-3 col-md-4">
-              <div class="card" style="width: 40rem; flex-direction: row">
-                <img
-                  class="card-img-top"
-                  src="./assets/compiled/svg/mekah.jpg"
-                  alt="Card image cap"
-                  style="
-                    width: 40%;
-                    border-top-left-radius: 12px;
-                    border-bottom-left-radius: 12px;
-                    border-top-right-radius: 0px;
-                  "
-                />
-                <div class="card-body">
-                  <h5 class="card-title">Card title</h5>
-                  <p class="card-text">
-                    Some quick example text to build on the card title and make
-                    up the bulk of the card's content.
-                  </p>
-                </div>
+        <div class="d-flex flex-wrap gap-2">
+          <div
+            class="d-flex flex-wrap"
+            v-for="Activity in activity"
+            :key="Activity.id"
+          >
+            <div class="card" style="width: 18rem">
+              <div class="card-body">
+                <h5 class="card-title">{{ Activity.title }}</h5>
+                <br />
+
+                <span>{{ formatDate(Activity.start_date) }}</span> <br />
+                <span>{{ formatDate(Activity.end_date) }}</span>
+                <br />
+                <br />
+                <p class="card-description">{{ Activity.description }}</p>
+
+                <br />
               </div>
             </div>
           </div>
@@ -100,31 +121,64 @@ export default {
   name: "AdminDashboard",
   data() {
     return {
-      blogs: []
+      blogs: [],
+      jumlahZakat: 0,
+      zakatTotal: 0,
+      infaqTotal: 0,
+      activity: [],
     };
   },
   mounted() {
-    this.fetchBlogs();
+    this.fetchDashboard();
   },
   methods: {
-    getImagePath(dir,imageName) {
-      return import.meta.env.VITE_BASE_IMG_URL + dir + '/' + imageName;
+    getImagePath(dir, imageName) {
+      return import.meta.env.VITE_BASE_IMG_URL + dir + "/" + imageName;
     },
-  
-    async fetchBlogs() {
+
+    async fetchDashboard() {
       try {
-        const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/blog`);
+        const response = await fetch(
+          `${import.meta.env.VITE_BASE_URL}/api/dashboard`
+        );
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error("Network response was not ok");
         }
         const data = await response.json();
-        this.blogs = data.data.data;
-        console.log(data.data.data);
+        let dt = data.data;
+
+        this.blogs = dt.blog;
+        this.jumlahZakat = dt.jumlahZakat;
+        this.zakatTotal = dt.zakatTotal;
+        this.infaqTotal = dt.infaqTotal;
+        this.activity = dt.activity;
       } catch (error) {
-        console.error('There was a problem fetching the blogs:', error);
+        console.error("There was a problem fetching the blogs:", error);
       }
-    }
-  }
+    },
+    formatCurrency(value) {
+      return new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+      }).format(value);
+    },
+    formatDate(dateString) {
+      const date = new Date(dateString);
+
+      const options = {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      };
+      const formattedDate = new Intl.DateTimeFormat("en-US", options).format(
+        date
+      );
+
+      const [weekday, day, month, year] = formattedDate.split(" ");
+      return `${weekday} ${day} ${month} ${year}`;
+    },
+  },
 };
 </script>
 
