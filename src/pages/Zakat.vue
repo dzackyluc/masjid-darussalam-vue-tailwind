@@ -22,6 +22,7 @@
             cupidatat non proident, sunt in culpa qui officia deserunt mollit
             anim id est laborum.
           </p>
+          <button @click="showAlert">Hello world</button>
         </div>
       </div>
       <div
@@ -110,7 +111,7 @@
                     Email
                   </div>
                   <input
-                    type="text"
+                    type="email"
                     v-model="form.email"
                     class="box-border bg-[#F6EFE5] w-full mt-2 p-2 rounded-[5px] shadow-md"
                     required
@@ -259,15 +260,11 @@
               class="total-p-grup inline-grid grid-cols-2 gap-10 justify-start mb-4"
             >
               <div class="mr-4 text-[#4E6F52] text-left mb-2">Total</div>
-              <div class="text-right">Pilih dalam 15:00</div>
+              <div class="text-right">{{ formatCurrency(form.sebesar) }}</div>
             </div>
             <div class="img-content text-center content-center">
               <div class="max-md mt-10">
-                <img
-                  src=".../assets/niat zakat.svg"
-                  alt="niat"
-                  class="mx-auto"
-                />
+                <img src="../assets/niatzakat.svg" alt="niat" class="mx-auto" />
               </div>
               <div class="mt-4">
                 <p class="text-center">
@@ -349,6 +346,8 @@ import "../assets/zakatreport.css";
 </script>
 <!-- <link rel="https://cdn.tailwindcss.com" rel="stylesheet"> -->
 <script>
+const token = localStorage.getItem("authToken");
+
 export default {
   data() {
     return {
@@ -365,6 +364,10 @@ export default {
     };
   },
   methods: {
+    showAlert() {
+      this.$swal.close();
+    },
+
     showPopup() {
       this.isPopupVisible = true;
       setTimeout(() => {
@@ -417,10 +420,7 @@ export default {
     submitForm() {
       if (this.form.payment === "cash") {
         const myHeaders = new Headers();
-        myHeaders.append(
-          "Authorization",
-          "Bearer 4|7E7hBjYnsonJRoPY87KvqflHn8LbzpqZh25duawke1c7b54a"
-        );
+        myHeaders.append("Authorization", `Bearer ${token}`);
 
         const formdata = new FormData();
         formdata.append("type", this.form.jenisZakat);
@@ -440,15 +440,26 @@ export default {
 
         fetch(`${import.meta.env.VITE_BASE_URL}/api/zakat`, requestOptions)
           .then((response) => response.text())
-          .then((result) =>  {
-
+          .then((result) => {
+            this.$swal({
+              title: "Berhasil!",
+              text: "Anda telah berhasil membayar zakat secara tunai",
+              icon: "success",
+            });
           })
           .catch((error) => {
-            
+            this.$swal({
+              title: "Gagal!",
+              text: "Anda gagal membayar zakat secara tunai",
+              icon: "error",
+            });
           });
       } else if (this.form.payment === "transfer") {
         this.isPaymentTransferVisible = true;
         this.isPopupVisible = false;
+
+        this.$swal.showLoading();
+
         this.showSnap();
       } else {
         alert("Form berhasil disubmit!");
@@ -461,10 +472,7 @@ export default {
     async showSnap() {
       this.closePopup();
       const myHeaders = new Headers();
-      myHeaders.append(
-        "Authorization",
-        "Bearer 4|7E7hBjYnsonJRoPY87KvqflHn8LbzpqZh25duawke1c7b54a"
-      );
+      myHeaders.append("Authorization", "Bearer " + token);
 
       const formdata = new FormData();
       formdata.append("type", this.form.jenisZakat);
@@ -481,29 +489,71 @@ export default {
         redirect: "follow",
       };
 
-      fetch("http://34.34.221.131/api/zakat/bayar", requestOptions)
-        .then((response) => response.json())
-        .then((result) => {
-          // Memanggil fungsi snap.pay() dengan snap token yang diterima dari backend
-          snap.pay(result.data, {
-            // Optional: Menambahkan callback untuk menangani kesuksesan pembayaran
-            onSuccess: function (result) {
-              console.log(result);
-              // Tambahkan logika sesuai kebutuhan
-            },
-            // Optional: Menambahkan callback untuk menangani pembayaran yang tertunda
-            onPending: function (result) {
-              console.log(result);
-              // Tambahkan logika sesuai kebutuhan
-            },
-            // Optional: Menambahkan callback untuk menangani kesalahan pembayaran
-            onError: function (result) {
-              console.error(result);
-              // Tambahkan logika sesuai kebutuhan
-            },
-          });
-        })
-        .catch((error) => console.error(error));
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_BASE_URL}/api/zakat/bayar`,
+          requestOptions
+        );
+        const result = await response.json();
+
+        this.$swal.close();
+        snap.pay(result.data, {
+          onSuccess: (result) => {
+
+            console.log(result);
+
+            const myHeaders = new Headers();
+            myHeaders.append("Authorization", `Bearer ${token}`);
+
+            const formdata = new FormData();
+            formdata.append("type", this.form.jenisZakat);
+            formdata.append("amount", this.form.sebesar);
+            formdata.append("name", this.form.nama);
+            formdata.append("gender", this.form.jenisKelamin);
+            formdata.append("phone", this.form.phone);
+            formdata.append("email", this.form.email);
+            formdata.append("midtrans_token", result.data);
+
+            formdata.append("transaction_id", result.transaction_id);
+            formdata.append("order_id", result.order_id);
+            formdata.append("payment_type", result.payment_type);
+
+
+            const requestOptions = {
+              method: "POST",
+              headers: myHeaders,
+              body: formdata,
+              redirect: "follow",
+            };
+
+            fetch(`${import.meta.env.VITE_BASE_URL}/api/zakat`, requestOptions)
+              .then((response) => response.text())
+              .then((result) => {
+                this.$swal({
+                  title: "Berhasil!",
+                  text: "Anda telah berhasil membayar zakat secara transfer",
+                  icon: "success",
+                });
+              })
+              .catch((error) => {
+                this.$swal({
+                  title: "Gagal!",
+                  text: "Anda gagal membayar zakat secara transfer",
+                  icon: "error",
+                });
+              });
+          },
+          onPending: (result) => {
+            // Add logic as needed
+          },
+          onError: (result) => {
+            console.error(result);
+            // Add logic as needed
+          },
+        });
+      } catch (error) {
+        console.error(error);
+      }
     },
   },
 };

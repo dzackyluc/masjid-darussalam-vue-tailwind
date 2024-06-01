@@ -52,7 +52,6 @@
               <img :src="getImagePath('blog',blog.thumbnail)" class="card-img-top" alt="Card image cap">
               <div class="card-body">
                 <h5 class="card-title">{{ blog.title }}</h5>
-                <p class="card-text">{{ blog.content }}</p>
               </div>
             </div>
           </div>

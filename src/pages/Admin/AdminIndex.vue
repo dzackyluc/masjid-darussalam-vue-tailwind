@@ -76,9 +76,9 @@
           <ul class="menu">
             <li
               class="sidebar-item"
-              :class="{ active: $route.path === '/admin' }"
+              :class="{ active: $route.path === '/admin/dashboard' }"
             >
-              <router-link :to="'/admin'" class="sidebar-link">
+              <router-link :to="'/admin/dashboard'" class="sidebar-link">
                 <i class="bi bi-justify"></i>
                 <span>Dashboard</span>
               </router-link>
@@ -121,15 +121,6 @@
               </router-link>
             </li>
 
-            <li
-              class="sidebar-item"
-              :class="{ active: $route.path === '/admin/reservasi' }"
-            >
-              <router-link :to="'/admin/reservasi'" class="sidebar-link">
-                <i class="bi bi-file-earmark-medical-fill"></i>
-                <span>Reservasi</span>
-              </router-link>
-            </li>
 
             <li class="sidebar-item">
               <button @click="handleLogout()" class="sidebar-link">
