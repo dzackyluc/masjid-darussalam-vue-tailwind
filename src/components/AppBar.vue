@@ -2,7 +2,7 @@
 import Toolbar from 'primevue/toolbar';
 </script>
 <template>
-    <Toolbar class="bg-white sticky">
+    <Toolbar class="bg-white">
         <template #start>
             <div class="flex items-center">
                 <img src="../assets/logo-appbar.png" class="h-12" alt="Masjid Darussalam">
