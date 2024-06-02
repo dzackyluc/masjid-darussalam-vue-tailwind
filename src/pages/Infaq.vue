@@ -179,7 +179,7 @@
             </div>
             <div class="img-content text-center content-center">
                 <div class="max-md mt-10">
-                    <img src=".../assets/niat zakat.svg" alt="niat" class="mx-auto">
+                    <img src="../assets/niat zakat.svg" alt="niat" class="mx-auto">
                 </div>
                 <div class="mt-4">
                     <p class="text-center">
