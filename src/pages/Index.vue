@@ -9,7 +9,7 @@
         </div>
     </div>
     <div class="grid grid-cols-6 my-8">
-        <div class="max-w-xl overflow-hidden col-span-3 pl-20 pt-14">
+        <div class="max-w-xl overflow-hidden col-span-3 px-20 pt-14">
             <div class="font-bold text-green-700 text-5xl mb-9">Waktu Sholat</div>
             <img src="../assets/sholat.png" alt="Sholat">
         </div>
@@ -32,17 +32,29 @@
     </div>
     <div class="bg-red-100 pb-12">
         <div>
-            <div class="text-4xl font-bold pt-12 pb-9 text-green-800 pl-16">Blog</div>
-            <div class="container grid grid-cols-12 gap-5">
-                <div v-for="n in 3" :key="n" class="container md:col-span-4 col-span-5">
+            <div class="text-4xl font-bold pt-12 pb-9 text-green-800 px-16">Blog</div>
+            <div class="grid grid-cols-3 gap-5 px-16">
+                <div v-if="blog" v-for="(item, index) in blog.slice(0,3)" :key="index" class="container md:col-span-1 col-span-2">
                     <div class="rounded overflow-hidden shadow-lg bg-white">
-                        <img v-if="blog" class="w-full" :src="'http://34.34.221.131/getFile/bog/' + blog[0].thumbnail" alt="Sunset in the mountains">
+                        <img class="w-full" :src="'https://api.masjiddarussalam.my.id/api/getFile/' + item.thumbnail" alt="Sunset in the mountains" />
                         <div class="px-6 py-4">
-                            <div v-if="blog" class="font-bold text-xl mb-2">{{ blog[0].title }}</div>
-                            <div v-if="blog" class="text-gray-700 truncate text-sm h-32" v-html="blog[0].content"></div>
+                            <div class="font-bold text-xl mb-2">{{ item.title }}</div>
+                            <div class="text-gray-700 text-base truncate h-32" v-html="item.content"></div>
                         </div>
                         <div class=" p-9">
-                            <button class="bg-green-800 hover:bg-gray-400 hover:text-black text-white rounded-xl py-2 px-28">Baca Disini</button>
+                            <button class="bg-green-800 hover:bg-gray-400 hover:text-black text-white rounded-xl h-10 w-full">Baca Disini</button>
+                        </div>
+                    </div>
+                </div>
+                <div v-else v-for="n in 3" :key="n" class="container md:col-span-1 col-span-2">
+                    <div class="rounded overflow-hidden shadow-lg bg-white">
+                        <div class="bg-gray-400 h-32 w-full animate-pulse" ></div>
+                        <div class="px-6 py-4">
+                            <div class="bg-gray-200 h-5 rounded-full animate-pulse mb-2"></div>
+                            <div class="bg-gray-200 animate-pulse truncate h-32"></div>
+                        </div>
+                        <div class=" p-9">
+                            <button class="bg-gray-400 rounded-xl animate-pulse h-10 w-full"></button>
                         </div>
                     </div>
                 </div>
@@ -51,31 +63,54 @@
     </div>
     <div class="px-16 pt-16 w-full">
         <div class="text-4xl font-bold text-green-800">Kegiatan</div>
-        <div class="container pt-7 w-full">
-            <div class="grid grid-cols-2 grid-rows-3 gap-4">
-                <div class="row-span-3 col-span-1">
-                    <button class="flex p-16 rounded-xl bg-red-100">
-                        <img class="h-56 w-fit bg-cover flex-none rounded-t overflow-hidden" src="https://img.pikbest.com/origin/09/01/22/25vpIkbEsTb7c.png!sw800" title="Woman holding a mug"></img>
-                        <div class="rounded-b p-4 flex flex-col justify-between leading-normal">
-                            <div class="mb-5 text-left">
-                                <div class="text-gray-900 font-bold text-3xl">Pengajian</div>
-                                <div class="text-gray-900 text-xl mb-2">21 Mei 2024 | 08:00 WIB</div>
-                                <p class="text-gray-700 text-base">Kegiatan pengajian mingguan yang dilaksanakan secara offline dengan pengajar yang berilmu dan berpengalaman. Pengajian ini terbuka bagi khalayak umum yang ingin mempelejari islam lebih dalam.</p>
+        <div class="pt-7 w-full">
+            <div v-if="activities" class="grid grid-cols-2 grid-rows-4 gap-4">
+                <div class="row-span-4 lg:col-span-1 col-span-2">
+                    <button class="grid grid-cols-2 place-content-center h-full w-full rounded-xl bg-red-100">
+                        <img :class="'h-fit w-fit col-span-1 bg-cover flex-none rounded-t overflow-hidden ' + (activities[0].thumbnail === null ? 'hidden' : '')" src="https://img.pikbest.com/origin/09/01/22/25vpIkbEsTb7c.png!sw800" title="Woman holding a mug"></img>
+                        <div :class="'rounded-b md:p-4 justify-between leading-normal ' + (activities[0].thumbnail === null ? 'col-span-2' : 'col-span-1')">
+                            <div class="mb-5">
+                                <div class="text-gray-900 text-center font-bold text-3xl">{{ activities[0].title }}</div>
+                                <div class="text-gray-900 text-center text-xl mb-2">{{ new Date(activities[0].start_date).toLocaleDateString() }} | {{ new Date(activities[0].start_date).toLocaleTimeString() }}</div>
+                                <p class="text-gray-700 animate-pulse h-6 rounded-full my-5">{{ activities[0].description }}</p>
                             </div>
                         </div>
                     </button>
                 </div>
-                <div v-for="n in 3" :key="n" class="row-span-1 col-span-1">
-                    <button class="p-8 rounded-xl w-full bg-red-100 flex" @click="router.push('/login');">
+                <div v-for="(item, index) in activities.slice(1,4)" :key="index" class="row-span-1 col-span-1 place-content-center">
+                    <button class="p-8 rounded-xl w-full bg-red-100 flex" @click="$router.push('/login');">
                         <div class="w-24 pl-3 h-14 bg-white text-start">
-                            <div class="text-bold text-xl">Jun 02</div>
-                            <div class="text-base">Sun</div>
+                            <div class="text-bold text-xl">{{ new Date(item.start_date).toDateString().substring(4,10) }}</div>
+                            <div class="text-base">{{ new Date(item.start_date).toDateString().substring(0,3) }}</div>
                         </div>
-                        <div class="w-24 pl-4 h-14">
-                            <div class="text-bold text-xl">Pengajian</div>
-                            <div class="text-base">08:00 WIB</div>
+                        <div class="w-full pl-4 h-14">
+                            <div class="text-bold text-xl">{{ item.title }}</div>
+                            <div class="text-base">{{ new Date(item.start_date).toLocaleTimeString() }}</div>
                         </div>
                     </button>
+                </div>
+            </div>
+            <div v-else class="grid grid-cols-2 grid-rows-4 gap-4">
+                <div class="row-span-4 lg:col-span-1 col-span-2">
+                    <div class="grid grid-cols-2 h-full w-full rounded-xl bg-red-100">
+                        <div class=" bg-gray-300 animate-pulse rounded-md h-full w-full col-span-1 bg-cover"></div>
+                        <div class="rounded-b p-4 justify-between leading-normal">
+                            <div class="mb-5">
+                                <div class="bg-gray-300 animate-pulse h-8 rounded-full"></div>
+                                <div class="bg-gray-300 animate-pulse h-6 mt-1 rounded-full mb-10"></div>
+                                <p v-for="n in 9" :key="n" class="bg-gray-300 animate-pulse h-6 rounded-full mb-5"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div v-for="n in 4" :key="n" class="row-span-1 col-span-1 place-content-center">
+                    <div class="p-8 rounded-xl w-full bg-red-100 flex">
+                        <div class="w-24 pl-3 h-14 bg-gray-300 animate-pulse text-start"></div>
+                        <div class="w-full pl-4 h-14">
+                            <div class="bg-gray-300 h-6 animate-pulse rounded-full"></div>
+                            <div class="bg-gray-300 h-6 animate-pulse w-32 rounded-full mt-5"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -122,6 +157,7 @@ export default {
         return {
             jadwal: null,
             blog: null,
+            activities: null,
         }
     },
 
@@ -132,7 +168,7 @@ export default {
 
         async getSholat() {
             try {
-                const response = await get('http://34.34.221.131/api/prayer-time');
+                const response = await get(`${import.meta.env.VITE_BASE_URL}/api/prayer-time`);
                 const result = Object.fromEntries(Object.entries(response.data.timings).slice(1, 7))
                 this.jadwal = result;
                 console.log(this.jadwal);
@@ -144,7 +180,7 @@ export default {
 
         async getBlog() {
             try {
-                const response = await get('http://34.34.221.131/api/blog');
+                const response = await get(`${import.meta.env.VITE_BASE_URL}/api/blog`);
                 this.blog = response.data.data;
                 console.log(this.blog);
             } catch (error) {
@@ -152,11 +188,23 @@ export default {
                 console.log("Tidak Dapat Mengambil Data Blog");
             }
         },
+
+        async getActivities() {
+            try {
+                const response = await get(`${import.meta.env.VITE_BASE_URL}/api/activity`);
+                this.activities = response.data.data;
+                console.log(this.activities);
+            } catch (error) {
+                console.log(error);
+                console.log("Tidak Dapat Mengambil Data Kegiatan");
+            }
+        }
     },
 
     mounted() {
         this.getSholat();
         this.getBlog();
+        this.getActivities();
     }
 }
 </script>
