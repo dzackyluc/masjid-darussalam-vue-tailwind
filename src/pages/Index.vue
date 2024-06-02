@@ -30,8 +30,8 @@
             </div>
         </div>
     </div>
-    <div class="container bg-red-100">
-        <div class="container">
+    <div class="bg-red-100 pb-12">
+        <div>
             <div class="text-4xl font-bold pt-12 pb-9 text-green-800 pl-16">Blog</div>
             <div class="grid grid-cols-12 gap-5 pl-16 pb-12">
                 <div v-for="n in 3" :key="n" class="col-span-4">
@@ -49,9 +49,9 @@
             </div>
         </div>
     </div>
-    <div class="container px-16 pt-16">
+    <div class="px-16 pt-16 w-full">
         <div class="text-4xl font-bold text-green-800">Kegiatan</div>
-        <div class="container pt-7">
+        <div class="container pt-7 w-full">
             <div class="grid grid-cols-2 grid-rows-3 gap-4">
                 <div class="row-span-3 col-span-1">
                     <button class="flex p-16 rounded-xl bg-red-100">
@@ -80,7 +80,7 @@
             </div>
         </div>
     </div>
-    <div class="container p-16">
+    <div class="p-16 pb-28">
         <div class="text-4xl font-bold text-green-800">Layanan</div>
         <div class="container pt-20 flex justify-around">
             <div>
