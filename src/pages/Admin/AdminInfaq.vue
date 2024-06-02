@@ -28,10 +28,8 @@ const fetchInfaq = async () => {
     }
     const data = await response.json();
 
-    console.log("INI DATAAAAA");
-    console.log(data.data.data);
     Infaq.value = data.data.data;
-    totalInfaq.value = data.data.totalInfaq;
+    totalInfaq.value = data.totalInfaq;
   } catch (error) {
     console.error("There was a problem fetching the Infaq:", error);
   }
