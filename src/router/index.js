@@ -88,10 +88,12 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
     if (to.matched.some(record => record.meta.requiresAuth)) {
         if (!isAuthenticated()) {
-            next({ path: '/login' }); 
+            next({ path: '/login' });
         } else {
             next();
         }
+    } else if ((to.path === '/login' || to.path === '/register') && isAuthenticated()) {
+        next({ path: '/admin/dashboard' });  
     } else {
         next();
     }
