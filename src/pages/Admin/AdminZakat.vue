@@ -4,6 +4,7 @@ import Editor from "@tinymce/tinymce-vue";
 import DataTable from "datatables.net-bs5";
 // import "datatables.net-dt/css/jquery.dataTables.css";
 import $ from "jquery";
+import * as XLSX from "xlsx";
 
 const token = localStorage.getItem("authToken");
 
@@ -41,24 +42,33 @@ const initializeDataTable = () => {
 };
 
 const deleteZakat = async (id) => {
-  try {
-    const response = await fetch(
-      `${import.meta.env.VITE_BASE_URL}/api/zakat/${id}`,
-      {
-        method: "DELETE",
-        headers: {
-                "Content-Type": "application/json",
-                Authorization: "Bearer " + token,
-              },
+  Swal.fire({
+    title: "Apakah Anda yakin?",
+    text: "Data yang dihapus tidak dapat dikembalikan!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Ya, hapus!",
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_BASE_URL}/api/zakat/${id}`,
+          {
+            method: "DELETE",
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        fetchZakat();
+      } catch (error) {
+        console.error("There was a problem deleting the Zakat:", error);
       }
-    );
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
     }
-    fetchZakat();
-  } catch (error) {
-    console.error("There was a problem deleting the Zakat:", error);
-  }
+  });
 };
 const ChangeStatus = async (id, event) => {
   const newStatus = event.target.value;
@@ -121,6 +131,13 @@ const ChangeStatus = async (id, event) => {
       console.error("There was a problem changing the status:", error);
     }
   }
+};
+
+const exportToExcel = () => {
+  const worksheet = XLSX.utils.json_to_sheet(Zakat.value);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Zakat");
+  XLSX.writeFile(workbook, "zakat.xlsx");
 };
 
 onMounted(fetchZakat);
@@ -227,12 +244,7 @@ onMounted(fetchZakat);
           </div>
         </div>
         <div class="d-flex justify-content-end gap-3">
-          <button
-            type="button"
-            class="btn btn-primary"
-            data-toggle="modal"
-            data-target="#myModal"
-          >
+          <button type="button" class="btn btn-primary" @click="exportToExcel">
             Print
           </button>
         </div>

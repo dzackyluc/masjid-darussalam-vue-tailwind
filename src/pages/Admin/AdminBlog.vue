@@ -37,6 +37,8 @@ const handleFileUpload = (event) => {
 };
 
 const addBlog = async () => {
+    Swal.showLoading();
+
   const formData = new FormData();
   formData.append("title", newBlog.value.title);
   formData.append("content", newBlog.value.content);
@@ -84,6 +86,13 @@ const addBlog = async () => {
       blogs.value.push(data.data);
     }
     resetForm();
+
+    Swal.close();
+    Swal.fire({
+      icon: "success",
+      title: "Berhasil",
+      text: `Data Blog berhasil ${isEditing.value ? "diupdate" : "ditambahkan"}`,
+    });
   } catch (error) {
     console.error(`There was a problem ${isEditing.value ? "updating" : "adding"} the blog:`, error);
   }
@@ -95,23 +104,46 @@ const editBlog = (blog) => {
 };
 
 const deleteBlog = async (blogId) => {
-  try {
-    const response = await fetch(
-      `${import.meta.env.VITE_BASE_URL}/api/blog/${blogId}`,
-      {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+
+  Swal.fire({
+    title: "Apakah Anda yakin?",
+    text: "Data yang dihapus tidak dapat dikembalikan!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Ya, hapus!",
+    cancelButtonText: "Batal",
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      Swal.showLoading();
+
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_BASE_URL}/api/blog/${blogId}`,
+          {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        blogs.value = blogs.value.filter((blog) => blog.id !== blogId);
+
+        Swal.close();
+        Swal.fire({
+          icon: "success",
+          title: "Berhasil",
+          text: "Data Blog berhasil dihapus",
+        });
+      } catch (error) {
+        console.error("There was a problem deleting the blog:", error);
       }
-    );
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
     }
-    blogs.value = blogs.value.filter((blog) => blog.id !== blogId);
-  } catch (error) {
-    console.error("There was a problem deleting the blog:", error);
-  }
+  });
+
+
 };
 
 const resetForm = () => {
