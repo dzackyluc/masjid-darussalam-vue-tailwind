@@ -3,7 +3,7 @@
         <div class="content-wrapper p-4">
         <div class="header-content flex flex-col items-center">
             <div class="image-header max-md mt-10">
-                <img src=".../assets/bismillah.svg" alt="bismillah">
+                <img src="../assets/bismillah.svg" alt="bismillah">
             </div>
             <div class="header pt-10">
                 <h1 class="font-bold">“Dengan menyebut nama ALLAH Yang Maha Pengasih lagi Maha Penyayang”</h1>

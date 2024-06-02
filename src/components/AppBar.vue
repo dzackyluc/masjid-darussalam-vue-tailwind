@@ -17,9 +17,9 @@ import Toolbar from 'primevue/toolbar';
                     Layanan <i class="pi pi-chevron-down"></i>
                 </button>
                 <div v-show="isOpen" class="absolute bg-green-800 border border-gray-300 rounded shadow-md z-50" @mouseover="isOpen = true" @mouseleave="isOpen = false">
-                    <button class="block w-full px-3 py-2 text-sm text-center text-white hover:bg-gray-300 hover:text-black" @click="this.$router.push('/infaq')">Infaq</button>
-                    <button class="block w-full px-3 py-2 text-sm text-center text-white hover:bg-gray-300 hover:text-black" @click="this.$router.push('/zakat')">Zakat</button>
-                    <button class="block w-full px-3 py-2 text-sm text-center text-white hover:bg-gray-300 hover:text-black" @click="this.$router.push('/reservasi')">Reservasi</button>
+                    <button class="block w-full px-3 py-2 text-sm text-center text-white hover:bg-gray-300 hover:text-black" @click="this.$router.push('/infaq');">Infaq</button>
+                    <button class="block w-full px-3 py-2 text-sm text-center text-white hover:bg-gray-300 hover:text-black" @click="this.$router.push('/zakat');">Zakat</button>
+                    <button class="block w-full px-3 py-2 text-sm text-center text-white hover:bg-gray-300 hover:text-black" @click="this.$router.push('/reservasi');">Reservasi</button>
                 </div>
             </div>
             <button class="font-light text-green-700 px-4 py-3 hover:bg-gray-200 2xl:rounded-full" @click="this.$router.push('/login');">
