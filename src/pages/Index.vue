@@ -33,15 +33,15 @@
     <div class="bg-red-100 pb-12">
         <div>
             <div class="text-4xl font-bold pt-12 pb-9 text-green-800 pl-16">Blog</div>
-            <div class="grid grid-cols-12 gap-5 pl-16 pb-12">
-                <div v-for="n in 3" :key="n" class="col-span-4">
-                    <div class="max-w-sm rounded overflow-hidden shadow-lg bg-white">
+            <div class="container grid grid-cols-12 gap-5">
+                <div v-for="n in 3" :key="n" class="container md:col-span-4 col-span-5">
+                    <div class="rounded overflow-hidden shadow-lg bg-white">
                         <img v-if="blog" class="w-full" :src="'http://34.34.221.131/getFile/bog/' + blog[0].thumbnail" alt="Sunset in the mountains">
                         <div class="px-6 py-4">
                             <div v-if="blog" class="font-bold text-xl mb-2">{{ blog[0].title }}</div>
                             <div v-if="blog" class="text-gray-700 truncate text-sm h-32" v-html="blog[0].content"></div>
                         </div>
-                        <div class="px-8 pt-4 pb-5">
+                        <div class=" p-9">
                             <button class="bg-green-800 hover:bg-gray-400 hover:text-black text-white rounded-xl py-2 px-28">Baca Disini</button>
                         </div>
                     </div>
