@@ -19,6 +19,7 @@ const Register = () => import('../pages/Auth/Register.vue');
 const InfaqAdmin = () => import('../pages/Admin/AdminInfaq.vue');
 
 const router = createRouter({
+    mode: 'history',
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
         {

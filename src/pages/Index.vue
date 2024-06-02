@@ -66,7 +66,7 @@
                     </button>
                 </div>
                 <div v-for="n in 3" :key="n" class="row-span-1 col-span-1">
-                    <button class="p-8 rounded-xl w-full bg-red-100 flex" @click="this.$router.push('/login');">
+                    <button class="p-8 rounded-xl w-full bg-red-100 flex" @click="router.push('/login');">
                         <div class="w-24 pl-3 h-14 bg-white text-start">
                             <div class="text-bold text-xl">Jun 02</div>
                             <div class="text-base">Sun</div>
@@ -137,6 +137,7 @@ export default {
                 this.jadwal = result;
                 console.log(this.jadwal);
             } catch (error) {
+                console.log(error);
                 console.log("Tidak Dapat Mengambil Data Jadwal Sholat");
             }
         },
@@ -147,6 +148,7 @@ export default {
                 this.blog = response.data.data;
                 console.log(this.blog);
             } catch (error) {
+                console.log(error);
                 console.log("Tidak Dapat Mengambil Data Blog");
             }
         },
