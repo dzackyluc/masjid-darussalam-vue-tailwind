@@ -26,7 +26,7 @@
             <table class="table-auto w-full text-center bg-[#F6EFE5] p-4 shadow-md rounded-[20px] cursor-pointer">
                 <thead class="bg-[#4E6F52] rounded-[20px] text-[white]">
                     <tr>
-                        <th class="w-1/12 p-2 content-center p-4 text-2xl font-medium" colspan="3">Mei 2024</th>
+                        <th class="w-1/12 content-center p-4 text-2xl font-medium" colspan="3">Mei 2024</th>
                     </tr>
                 </thead>
                 <tbody>

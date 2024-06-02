@@ -11,18 +11,20 @@
             “Dengan menyebut nama ALLAH Yang Maha Pengasih lagi Maha Penyayang”
           </h1>
         </div>
-        <div class="definition-zakat pt-10 pr-40 pl-40">
-          <p class="text-justify font-medium">
-            Pengertian zakat fitrah sama ayatnya Lorem ipsum dolor sit amet,
-            consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut
-            labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-            exercitation ullamco laboris nisi ut aliquip ex ea commodo
-            consequat. Duis aute irure dolor in reprehenderit in voluptate velit
-            esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-            cupidatat non proident, sunt in culpa qui officia deserunt mollit
-            anim id est laborum.
+        <div class="definition-zakat pt-10 pr-40 pl-40 font-medium">
+          <p class="text-center font-medium">
+            Zakat merupakan sebuah praktek peribadatan yang mana setiap orang Islam diwajibkan untuk membayarkan 2,5% harta yang dimilikinya kepada yang membutuhkan. 
+            Seperti yang tertear dalam surah Al-Anbiya ayat 173:
           </p>
-          <button @click="showAlert">Hello world</button>
+        </div>
+        <br>
+        <div class="image-anbiya max-md mt-10">
+          <img src="../assets/al-anbiya-173.svg" alt="Al Anbiya 173" />
+        </div>
+        <div class="definition-zakat pt-10 pr-40 pl-40 font-medium">
+          <p class="text-center text-10px font-medium">
+            “Dan Kami menjadikan mereka itu sebagai pemimpin-pemimpin yang memberi petunjuk dengan perintah Kami dan Kami 
+            wahyukan kepada mereka agar berbuat kebaikan, melaksanakan salat dan menunaikan zakat, dan hanya kepada Kami mereka menyembah.”          </p>
         </div>
       </div>
       <div
