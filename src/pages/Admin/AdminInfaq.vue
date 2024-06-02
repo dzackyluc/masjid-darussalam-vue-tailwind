@@ -12,6 +12,7 @@ DataTable.use(DataTablesCore);
 const token = localStorage.getItem("authToken");
 
 const Infaq = ref([]);
+const totalInfaq = ref(0);
 const newInfaq = ref({
   title: "",
   amount: "",
@@ -30,6 +31,7 @@ const fetchInfaq = async () => {
     console.log("INI DATAAAAA");
     console.log(data.data.data);
     Infaq.value = data.data.data;
+    totalInfaq.value = data.data.totalInfaq;
   } catch (error) {
     console.error("There was a problem fetching the Infaq:", error);
   }
@@ -200,7 +202,7 @@ const showModal = () => {
           <div class="card-header">
             <h1 class="mt-4" style="float: left">Laporan Infaq</h1>
             <h3 style="float: right; margin-top: 2.5rem">
-              Total : Rp3.000.000
+              Total : {{totalInfaq}}
             </h3>
           </div>
           <div class="card-body">
