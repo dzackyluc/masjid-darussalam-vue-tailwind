@@ -8,7 +8,6 @@ const Activity = () => import('../pages/Activity.vue');
 const Zakat = () => import('../pages/Zakat.vue');
 const Infaq = () => import('../pages/Infaq.vue');
 const Blog = () => import('../pages/Blog.vue');
-const Kegiatan = () => import('../pages/Kegiatan.vue');
 const BlogDetail = () => import('../pages/Page.vue');
 const AdminIndex = () => import('../pages/Admin/AdminIndex.vue');
 const AdminDashboard = () => import('../pages/Admin/AdminDashboard.vue');
@@ -79,13 +78,7 @@ const router = createRouter({
                     props: (route) => ({ id: route.query.id })
                 }
             ]
-        },
-        {
-            path: '/kegiatan',
-            component: Kegiatan
-        },
-
-        
+        },  
 
         // admin routes
         {
