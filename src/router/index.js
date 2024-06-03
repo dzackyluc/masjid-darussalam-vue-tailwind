@@ -16,6 +16,8 @@ const ActivitiesAdmin = () => import('../pages/Admin/AdminActivity.vue');
 // const ReservasiAdmin = () => import('../pages/admin/Reservasi.vue');
 const ZakatAdmin = () => import('../pages/Admin/AdminZakat.vue');
 
+const Galeri = () => import('../pages/Galeri.vue');
+const Profile = () => import('../pages/Profile.vue');
 const Login = () => import('../pages/Auth/Login.vue');
 const Register = () => import('../pages/Auth/Register.vue');
 

@@ -1,4 +1,4 @@
-<script setup>
+AppFooter<script setup>
 import Toolbar from 'primevue/toolbar';
 </script>
 <template>
