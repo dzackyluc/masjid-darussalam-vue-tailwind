@@ -4,5 +4,7 @@ import AppBar from '../components/AppBar.vue';
 
 <template>
     <AppBar />
-    <p>kegiatan</p>
+    <div class="container">
+        <h1></h1>
+    </div>
 </template>
