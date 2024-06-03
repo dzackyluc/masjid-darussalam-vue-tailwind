@@ -1,6 +1,7 @@
 <script setup>
 import Toolbar from 'primevue/toolbar';
 </script>
+
 <template>
     <Toolbar class="bg-white">
         <template #start>
