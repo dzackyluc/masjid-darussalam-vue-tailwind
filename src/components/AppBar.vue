@@ -9,8 +9,8 @@ import Toolbar from 'primevue/toolbar';
             </div>
         </template>
         <template #end>
-            <button :class="'font-light text-green-700 ' + ($route.path === '/' ? 'underline' : 'hover:underline')" @click="router.push('/');">Home</button>
-            <button :class="'font-light text-green-700 px-4 ' + ($route.path === '/profil' ? 'underline' : 'hover:underline')" @click="router.push('/profil');">Profil</button>
+            <button :class="'font-light text-green-700 ' + ($route.path === '/' ? 'underline' : 'hover:underline')" @click="$router.push('/');">Home</button>
+            <button :class="'font-light text-green-700 px-4 ' + ($route.path === '/profil' ? 'underline' : 'hover:underline')" @click="$router.push('/profil');">Profil</button>
             <button :class="'font-light text-green-700 ' + ($route.path === '/galeri' ? 'underline' : 'hover:underline')" @click="$router.push('/galeri');">Galeri</button>
             <div class="relative" @mouseover="isOpen = true" @mouseleave="isOpen = false">
                 <button class="font-light text-green-700 px-4 hover:underline">
