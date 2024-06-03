@@ -4,19 +4,12 @@
         <div class="background-image bg-cover bg-no-repeat h-screen w-screen">
         </div>
     </div>
-   
-   <div style="width:50%;margin:auto;height:150px;background:white;margin-top:-70px;display:flex;justify-content:center;border-radius:25px;font-size:50px;font-weight:bold;align-items:center" class="drop-shadow-md text-green-800">
+   <div class="bg-white rounded-3xl mb-24 text-6xl font-bold items-center -mt-20 w-1/2 m-auto h-40 drop-shadow-md flex justify-center text-green-800">
     Masjid Darussalam
-    
-   </div>
-   <br>
-   <br>
-   <br>
-
-
-            <div class="text-4xl font-bold pb-9 text-green-800 px-16">Waktu Sholat</div>
+    </div>
+        <div class="text-4xl font-bold pb-9 text-green-800 px-16">Waktu Sholat</div>
    
-        <div class="flex" style="width:90%;margin:auto;gap:100px">
+            <div class="flex m-auto gap-28" style="width:90%;">
 
             <div>
                 <img src="../assets/sholat.png" alt="">
@@ -24,9 +17,9 @@
 
            <div style="flex:1;" class="bg-[#F6EFE5] rounded-lg p-5">
              <div style="">
-                 <div v-if="jadwal" v-for="(item, key, index) in jadwal" :key="index" class="bg-white rounded-lg" style="width:100%">
-                    <div class="flex px-7" style="align-items:center;justify-content:space-between;margin-bottom:10px;height:80px">
-                        <div class="text-gray-800 font-bold col-span-1 text-2xl m-3 flex" style="align-items:center;gap:10px">
+                <div v-if="jadwal" v-for="(item, key, index) in jadwal" :key="index" class="bg-white rounded-lg w-full">
+                    <div class="flex px-7 items-center justify-between mb-3 h-20">
+                        <div class="text-gray-800 font-bold col-span-1 text-2xl m-3 flex items-center gap-3" style="gap:10px">
                             <div>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"  fill="currentColor" class="bi bi-clock" viewBox="0 0 16 16">
                                   <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"/>
@@ -39,12 +32,11 @@
                         </div>
                         <div class="text-gray-700 col-span-1 text-end text-xl m-3 ">{{ item }}</div>
                     </div>
-
-            </div>
-            <!-- <div v-else v-for="n in 6" :key="n" class="bg-white rounded-lg" style="width:100%">
-                <div class="bg-gray-200 h-5 rounded-full w-28 col-span-1 animate-pulse m-3"></div>
-                <div class="bg-gray-200 h-5 rounded-full w-14 col-span-1 animate-pulse my-3 mr-3 ml-auto"></div>
-            </div> -->
+                </div>
+                <!-- <div v-else v-for="n in 6" :key="n" class="bg-white rounded-lg" style="width:100%">
+                    <div class="bg-gray-200 h-5 rounded-full w-28 col-span-1 animate-pulse m-3"></div>
+                    <div class="bg-gray-200 h-5 rounded-full w-14 col-span-1 animate-pulse my-3 mr-3 ml-auto"></div>
+                </div> -->
             </div>
            </div>
 
@@ -65,7 +57,7 @@
                             <div class="text-gray-700 text-base long-and-truncated ">{{ stripHTML(item.content) }}</div>
                         </div>
                         <div class=" p-9">
-                            <button class="bg-green-800 hover:bg-gray-400 hover:text-black text-white rounded-xl h-10 w-full">Baca Disini</button>
+                            <button @click="$router.push(`/blog/read?id=${item.id}`)" class="bg-green-800 hover:bg-gray-400 hover:text-black text-white rounded-xl h-10 w-full">Baca Disini</button>
                         </div>
                     </div>
                 </div>
@@ -89,19 +81,18 @@
         <div class="pt-7 w-full">
             <div v-if="activities" class="grid grid-cols-2 grid-rows-4 gap-4">
                 <div class="row-span-4 lg:col-span-1 col-span-2">
-                    <button class="grid grid-cols-2 place-content-center h-full w-full rounded-xl bg-[#F6EFE5]">
-                        <img :class="'h-fit w-fit col-span-1 bg-cover flex-none rounded-t overflow-hidden ' + (activities[0].thumbnail === null ? 'hidden' : '')" src="https://img.pikbest.com/origin/09/01/22/25vpIkbEsTb7c.png!sw800" title="Woman holding a mug"></img>
-                        <div :class="'rounded-b md:p-4 justify-between leading-normal ' + (activities[0].thumbnail === null ? 'col-span-2' : 'col-span-1')">
+                    <div class="grid grid-cols-2 place-content-center h-full w-full rounded-xl bg-[#F6EFE5]">
+                        <div :class="'rounded-b md:p-4 justify-between leading-normal col-span-2'">
                             <div class="mb-5">
                                 <div class="text-gray-900 text-center font-bold text-3xl">{{ activities[0].title }}</div>
                                 <div class="text-gray-900 text-center text-xl mb-2 ">{{ new Date(activities[0].start_date).toLocaleDateString() }} | {{ new Date(activities[0].start_date).toLocaleTimeString() }}</div>
-                                <p class="text-gray-700 animate-pulse h-6 rounded-full my-5">{{ activities[0].description }}</p>
+                                <p class="text-gray-700 h-6 rounded-full my-5">{{ activities[0].description }}</p>
                             </div>
                         </div>
-                    </button>
+                    </div>
                 </div>
                 <div v-for="(item, index) in activities.slice(1,4)" :key="index" class="row-span-1 col-span-1 place-content-center">
-                    <button class="p-8 rounded-xl w-full bg-[#F6EFE5] flex" @click="$router.push('/login');">
+                    <button class="p-8 rounded-xl w-full bg-[#F6EFE5] flex">
                         <div class="w-24 pl-3 bg-white rounded text-start">
                             <div class="text-bold text-xl">{{ new Date(item.start_date).toDateString().substring(4,10) }}</div>
                             <div class="text-base">{{ new Date(item.start_date).toDateString().substring(0,3) }}</div>
@@ -139,8 +130,8 @@
         </div>
     </div>
     <div class="p-16 pb-28">
-        <div class="text-4xl font-bold text-green-800">Layanan</div>
-        <div class="container pt-20 flex justify-around">
+        <div class="text-4xl pb-16 font-bold text-green-800">Layanan</div>
+        <div class="container px-20 flex justify-around">
             <div>
                 <button @click="$router.push('/galeri');" class=" bg-[#F6EFE5] hover:bg-green-600 border-black w-32 h-32 rounded-full">
                     <i class="pi pi-images text-3xl"></i>
@@ -167,44 +158,6 @@
             </div>
         </div>
     </div>
-
-
-
-
-    <footer style="background:#4E6F52;height:300px;display:flex;justify-content:space-between;align-items:center" class="px-10">
-        <div>
-
-            <div style="width:400px;background:#E7DFCA;border-radius:20px">
-                <img src="../assets/logo-appbar.png" alt="">
-                <br>
-                <p style="color:#4E6F52">Jl. Komp. Bukit Cengkeh Berbunga No.Raya, Bakti Jaya, Kec. Sukmajaya, Kota Depok, Jawa Barat 16418</p>
-            </div>
-        </div>
-        <div>
-            <ul style="">
-                <li>
-                    Home
-                </li>
-                <li>
-                    Profile
-                </li>
-                <li>
-                    Galeri
-                </li>
-                <li>
-                    Zakat
-                </li>
-                <li>
-                    Infaq
-                </li>
-<li>
-                    Reservasi
-                </li>
-            </ul>
-        </div>
-    </footer>
-
-
 </template>
 
 <script setup>
