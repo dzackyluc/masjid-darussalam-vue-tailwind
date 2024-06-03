@@ -299,6 +299,7 @@
         </div>
       </div>
     </div>
+    <FooterBar />
   </div>
 </template>
 
@@ -345,6 +346,7 @@
 
 <script setup>
 import AppBar from "../components/AppBar.vue";
+import FooterBar from "../components/FooterBar.vue";
 import "../assets/zakatreport.css";
 </script>
 <!-- <link rel="https://cdn.tailwindcss.com" rel="stylesheet"> -->

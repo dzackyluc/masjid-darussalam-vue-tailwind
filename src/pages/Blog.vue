@@ -1,5 +1,6 @@
 <script setup>
 import AppBar from '../components/AppBar.vue';
+import AppFooter from '../components/AppFooter.vue';
 import axios from 'axios';
 </script>
 
@@ -19,6 +20,7 @@ import axios from 'axios';
             </div>
         </div>
     </div>
+    <AppFooter />
 </template>
 
 <script>
