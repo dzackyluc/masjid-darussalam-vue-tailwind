@@ -1,6 +1,6 @@
 <template>
+    <AppBar />
     <div>
-        <AppBar />
         <div class="content-wrapper p-4">
             <div class="header-content flex flex-col items-center">
                 <div class="image-header mt-10">
@@ -55,7 +55,6 @@
                 </div>
             </div>
         </div>
-        <AppFooter />
     </div>
     <AppFooter />
 </template>
@@ -83,80 +82,4 @@ const fetchInfaq = async () => {
 };
 
 onMounted(fetchInfaq);
-
-// $(document).ready(function() {
-//     $('#popupButton').on('click', function() {
-//         $('#popupForm').removeClass('hidden');
-//         setTimeout(function() {
-//             $('#popupForm').addClass('popup-show').removeClass('popup-hide');
-//         }, 10);
-//     });
-
-//     $('#closeButton').on('click', function() {
-//         $('#popupForm').removeClass('popup-show').addClass('popup-hide');
-//         setTimeout(function() {
-//             $('#popupForm').addClass('hidden');
-//         }, 300);
-//     });
-
-//     // Fungsi untuk memeriksa validasi field input
-//     function validateForm() {
-//         let isValid = true;
-//         $('input, select').each(function() {
-//             if ($(this).val() === '' || $(this).val() === null) {
-//                 isValid = false;
-//                 $(this).addClass('border-red-500');
-//             } else {
-//                 $(this).removeClass('border-red-500'); 
-//             }
-//         });
-//         return isValid;
-//     }
-
-//     // Tangani peristiwa saat tombol "Lanjut" ditekan
-//     $('#nextButton').on('click', function(event) {
-//         event.preventDefault();
-
-//         if (validateForm()) {
-//             if ($('select[name="payment"]').val() === 'cash') {
-//                 $('#paymentTunai').removeClass('hidden');
-//                 $('#popupForm').addClass('hidden');
-//             } else {
-//                 alert('Form berhasil disubmit!');
-//                 $('#popupForm').removeClass('popup-show').addClass('popup-hide');
-//                 setTimeout(function() {
-//                     $('#popupForm').addClass('hidden');
-//                 }, 300); 
-//             }
-//         } else {
-//             alert('Harap isi semua formulir.');
-//         }
-//     });
-
-//     // Tangani peristiwa saat tombol "Kembali" atau "Kirim" ditekan
-//     $('#backButton, #sentButton').on('click', function() {
-//         $('#paymentTunai').removeClass('popup-show').addClass('popup-hide');
-//         setTimeout(function() {
-//             $('#paymentTunai').addClass('hidden');
-//         }, 300);
-//     });
-//     document.getElementById('nextButton').addEventListener('click', function() {
-//         var inputSebesar = document.getElementById('inputSebesar').value;
-//         if (inputSebesar === '') {
-//             alert('Silakan masukkan jumlah.');
-//             return;
-//         }
-//         document.getElementById('totalAmount').textContent = 'Rp. ' + inputSebesar;
-//         document.getElementById('popupForm').classList.add('hidden');
-//         document.getElementById('paymentTunai').classList.remove('hidden');
-//     });
-
-//     document.getElementById('backButton').addEventListener('click', function() {
-//         document.getElementById('paymentTunai').classList.add('hidden');
-//         document.getElementById('popupForm').classList.remove('hidden');
-//     });
-
-//     document.getElementById('closeButton').addEventListener('click', function() {
-//         document.getElementById('popupForm').classList.add('hidden');
-//     });
 </script>

@@ -203,7 +203,17 @@
   <br />
   <div class="pb-12">
     <div>
-      <div class="text-4xl font-bold pt-12 pb-9 text-green-800 px-16">Blog</div>
+      <div class="flex justify-between pt-12 pb-9 px-16">
+          <div class="text-4xl font-bold text-green-800">Blog</div>
+            <div class="text-right">
+                <button
+                @click="$router.push('/blog')"
+                class="bg-green-800 hover:bg-gray-400 hover:text-black text-white rounded-xl h-10 w-32"
+                >
+                Lihat Semua
+                </button>
+            </div>
+      </div>  
       <div class="flex flex-wrap mx-10 gap-10">
         <div
           v-if="blog"
