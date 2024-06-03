@@ -13,8 +13,8 @@
         </div>
         <div class="definition-zakat pt-10 pr-40 pl-40 font-medium">
           <p class="text-center text-xl font-medium">
-            Infaq merupakan tindakan mulia dengan memberikan sebagian harta yang dimiliki kepada sesama sebagai bentuk kepedulian dan kebaikan. 
-            Infaq adalah bukti nyata dari kemurahan hati dan kecintaan kepada sesama, sebagaimana yang diperintahkan oleh Allah SWT dalam Al-Qur'an, Surat Al-Baqarah ayat 267:
+            Zakat merupakan sebuah praktek peribadatan yang mana setiap orang Islam diwajibkan untuk membayarkan 2,5% harta yang dimilikinya kepada yang membutuhkan. 
+            Seperti yang tertear dalam surah Al-Anbiya ayat 173:
           </p>
         </div>
         <br>
@@ -300,6 +300,7 @@
       </div>
     </div>
   </div>
+  <AppFooter />
 </template>
 
 <!-- <style src=".../assets/zakatreport.css"></style> -->
@@ -345,6 +346,7 @@
 
 <script setup>
 import AppBar from "../components/AppBar.vue";
+import AppFooter from "../components/AppFooter.vue";
 import "../assets/zakatreport.css";
 </script>
 <!-- <link rel="https://cdn.tailwindcss.com" rel="stylesheet"> -->

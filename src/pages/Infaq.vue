@@ -56,10 +56,13 @@
         </div>
     </div>
     </div>
+    <AppFooter />
 </template>
 
 <script setup>
 import AppBar from "../components/AppBar.vue";
+import AppFooter from "../components/AppFooter.vue";
+
 import { ref, onMounted } from "vue";
 
 const Infaqs = ref([]);

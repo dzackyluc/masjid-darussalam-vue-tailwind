@@ -20,10 +20,12 @@
           </label>
           <input v-model="password" class="shadow appearance-none border bg-[#E7DFCA] rounded w-full py-2 px-3 text-black mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="******************">
         </div>
-        <div class="flex items-center justify-between"> 
+        <div class="flex flex-col items-center justify-between"> 
           <button class="bg-[#4E6F52] w-full hover:bg-[#3b543e] text-white font-medium py-2 px-4 rounded-[10px] focus:outline-none focus:shadow-outline shadow-md" type="submit">
             Login
           </button>
+          <br>
+          <button :class="'font-light text-[#a9a9a8d3] ' + ($route.path === '/' ? 'underline' : 'hover:underline')" @click="$router.push('/');">Kembali ke menu utama</button>
         </div>
       </form>
     </div>

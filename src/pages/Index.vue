@@ -15,9 +15,9 @@
                 <img src="../assets/sholat.png" alt="">
             </div>
 
-           <div style="flex:1;" class="bg-[#F6EFE5] rounded-lg p-5">
+           <div style="flex:1;" class=" rounded-lg p-5">
              <div style="">
-                <div v-if="jadwal" v-for="(item, key, index) in jadwal" :key="index" class="bg-white rounded-lg w-full">
+                <div v-if="jadwal" v-for="(item, key, index) in jadwal" :key="index" class="bg-white shadow-md rounded-lg w-full">
                     <div class="flex px-7 items-center justify-between mb-3 h-20">
                         <div class="text-gray-800 font-bold col-span-1 text-2xl m-3 flex items-center gap-3" style="gap:10px">
                             <div>
@@ -49,14 +49,14 @@
         <div>
             <div class="text-4xl font-bold pt-12 pb-9 text-green-800 px-16">Blog</div>
             <div class="grid grid-cols-3 gap-5 px-16">
-                <div v-if="blog" v-for="(item, index) in blog.slice(0,3)" :key="index" class="container md:col-span-1 col-span-2">
-                    <div class="rounded overflow-hidden shadow-lg bg-white">
+                <div v-if="blog" v-for="(item, index) in blog.slice(0, 3)" :key="index" class="container md:col-span-1 col-span-2 transition transform hover:-translate-y-1 hover:scale-105 duration-300 cursor-pointer">
+                    <div @click="$router.push(`/blog/read?id=${item.id}`)" class="rounded-[15px] overflow-hidden shadow-lg bg-white">
                         <img class="w-full" :src="getImagePath('blog', item.thumbnail)" alt="Sunset in the mountains" />
                         <div class="px-6 py-4">
                             <div class="font-bold text-xl mb-2">{{ item.title }}</div>
-                            <div class="text-gray-700 text-base long-and-truncated ">{{ stripHTML(item.content) }}</div>
-                        </div>
-                        <div class=" p-9">
+                            <div class="text-gray-700 text-base long-and-truncated text-justify">{{ stripHTML(item.content) }}</div>
+                        </div> <br>
+                        <div class="p-9">
                             <button @click="$router.push(`/blog/read?id=${item.id}`)" class="bg-green-800 hover:bg-gray-400 hover:text-black text-white rounded-xl h-10 w-full">Baca Disini</button>
                         </div>
                     </div>
@@ -76,6 +76,7 @@
             </div>
         </div>
     </div>
+    <br><br>
     <div class="px-16 pt-16 w-full">
         <div class="text-4xl font-bold text-green-800">Kegiatan</div>
         <div class="pt-7 w-full">
@@ -129,6 +130,7 @@
             </div>
         </div>
     </div>
+    <br><br>
     <div class="p-16 pb-28">
         <div class="text-4xl pb-16 font-bold text-green-800">Layanan</div>
         <div class="container px-20 flex justify-around">
@@ -158,12 +160,13 @@
             </div>
         </div>
     </div>
+    <AppFooter />
 </template>
 
 <script setup>
 import { get } from "jquery";
 import AppBar from "../components/AppBar.vue";
-import FooterBar from "../components/AppFooter.vue";
+import AppFooter from "../components/AppFooter.vue";
 
 const stripHTML = (html) => {
   const doc = new DOMParser().parseFromString(html, "text/html");

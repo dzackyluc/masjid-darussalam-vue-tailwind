@@ -5,11 +5,13 @@
         <img :src="`${image}${response.thumbnail}`" class="px-64" alt="">
         <div class="p-32" v-html="response.content"></div>
     </div>
+    <AppFooter />
 </template>
 
 <script setup>
 import { get } from 'jquery';
 import AppBar from '../components/AppBar.vue';
+import AppFooter from "../components/AppFooter.vue";
 </script>
 
 <script>

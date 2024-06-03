@@ -1,5 +1,6 @@
 <script setup>
 import AppBar from '../components/AppBar.vue';
+import AppFooter from "../components/AppFooter.vue";
 </script>
 
 <template>
@@ -18,9 +19,11 @@ import AppBar from '../components/AppBar.vue';
             </div>
         </div>
     </div>
+    <AppFooter />
 </template>
 
 <script>
+
 export default {
     data() {
         return {
