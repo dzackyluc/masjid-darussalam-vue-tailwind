@@ -29,7 +29,7 @@
               <div class="card">
                 <div class="card-body px-4 py-4-5">
                   <div class="row">
-                    <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
+                    <div class="col-md-8 col-lg-12">
                       <h6 class="text-muted font-semibold">
                         <i class="bi bi-cash"></i> Infaq
                       </h6>
@@ -45,7 +45,7 @@
               <div class="card">
                 <div class="card-body px-4 py-4-5">
                   <div class="row">
-                    <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
+                    <div class="col-md-8 col-lg-12">
                       <h6 class="text-muted font-semibold">
                         <i class="bi bi-cash"></i> Zakat
                       </h6>
@@ -64,11 +64,11 @@
           <h4>Blog</h4>
         </div>
         <div class="col-12 col-lg-12">
-          <div class="row">
+          <div class="d-flex gap-3 flex-wrap">
             <div
               v-for="blog in blogs"
               :key="blog.id"
-              class="col-4 col-lg-3 col-md-4"
+              class=""
             >
               <div class="card" style="width: 15rem">
                 <img
@@ -87,7 +87,7 @@
         <div class="page-heading">
           <h4>Kegiatan</h4>
         </div>
-        <div class="d-flex flex-wrap gap-2">
+        <div class="d-flex flex-wrap gap-3">
           <div
             class="d-flex flex-wrap"
             v-for="Activity in activity"

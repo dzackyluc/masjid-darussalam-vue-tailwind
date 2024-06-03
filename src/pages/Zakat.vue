@@ -7,44 +7,45 @@
           <img src="../assets/bismillah.svg" alt="bismillah" />
         </div>
         <div class="header pt-10">
-          <h1 class="font-bold">
+          <h1 class="font-bold text-2xl">
             “Dengan menyebut nama ALLAH Yang Maha Pengasih lagi Maha Penyayang”
           </h1>
         </div>
         <div class="definition-zakat pt-10 pr-40 pl-40 font-medium">
-          <p class="text-center font-medium">
+          <p class="text-center text-xl font-medium">
             Zakat merupakan sebuah praktek peribadatan yang mana setiap orang Islam diwajibkan untuk membayarkan 2,5% harta yang dimilikinya kepada yang membutuhkan. 
             Seperti yang tertear dalam surah Al-Anbiya ayat 173:
           </p>
         </div>
         <br>
+        <br>
         <div class="image-anbiya max-md mt-10">
           <img src="../assets/al-anbiya-173.svg" alt="Al Anbiya 173" />
         </div>
         <div class="definition-zakat pt-10 pr-40 pl-40 font-medium">
-          <p class="text-center text-10px font-medium">
+          <p class="text-center text-xl font-weight-medium">
             “Dan Kami menjadikan mereka itu sebagai pemimpin-pemimpin yang memberi petunjuk dengan perintah Kami dan Kami 
             wahyukan kepada mereka agar berbuat kebaikan, melaksanakan salat dan menunaikan zakat, dan hanya kepada Kami mereka menyembah.”          </p>
         </div>
       </div>
       <div
-        class="zakat-header flex justify-between items-center pr-40 pl-40 mt-10"
+        class="zakat-header flex justify-center items-center pr-40 pl-40 mt-10"
       >
-        <div class="header-laporan font-semibold">
+        <!-- <div class="header-laporan font-semibold">
           <h1 class="text-2xl text-[#4E6F52]">Laporan Zakat</h1>
-        </div>
-        <div class="flex w-6/12 max-md:ml-0 max-md:w-full justify-end">
+        </div> -->
+        <div class="flex w-6/12 max-md:ml-0 max-md:w-full justify-center items-center mt-10">
           <button
             @click="showPopup"
-            class="box-border h-[33px] w-[190px] relative px-4 ml-20 mt-10 font-medium shadow-md text-center bg-[#4E6F52] transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 appearance-none cursor-pointer rounded-[10px] text-[#F6EFE5] max-sm:mt-12"
+            class="flex items-center justify-center h-[80px] w-[360px] font-medium shadow-md text-3xl bg-[#4E6F52] transition transform hover:-translate-y-1 hover:scale-110 duration-300 cursor-pointer rounded-[15px] text-[#F6EFE5] max-sm:mt-12"
             data-el="button-1"
           >
-            Ikut Berzakat
+            Ikutan Berzakat yuk !
           </button>
         </div>
       </div>
       <div class="table-data flex justify-center pr-40 pl-40 mt-10">
-        <div class="table-data flex justify-center pr-40 pl-40 mt-10">
+        <!-- <div class="table-data flex justify-center pr-40 pl-40 mt-10">
           <table
             class="table-auto w-full text-center bg-[#F6EFE5] p-4 shadow-lg rounded-[10px] cursor-pointer"
           >
@@ -69,7 +70,7 @@
               </tr>
             </tbody>
           </table>
-        </div>
+        </div> -->
         <div
           v-if="isPopupVisible"
           class="fixed top-0 left-0 w-full h-full bg-black/50 flex items-center justify-center"

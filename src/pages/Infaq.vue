@@ -1,5 +1,6 @@
 <template>
     <div>
+        <AppBar />
         <div class="content-wrapper p-4">
         <div class="header-content flex flex-col items-center">
             <div class="image-header max-md mt-10">

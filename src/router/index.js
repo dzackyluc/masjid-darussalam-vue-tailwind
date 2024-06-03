@@ -4,6 +4,7 @@ import { isAuthenticated } from './auth';
 
 const Index = () => import('../pages/Index.vue');
 const About = () => import('../pages/About.vue');
+const Activity = () => import('../pages/Activity.vue');
 const Zakat = () => import('../pages/Zakat.vue');
 const Infaq = () => import('../pages/Infaq.vue');
 const AdminIndex = () => import('../pages/Admin/AdminIndex.vue');
@@ -45,6 +46,10 @@ const router = createRouter({
         {
             path: '/infaq',
             component: Infaq,
+        },
+        {
+            path: '/activity',
+            component: Activity,
         },
 
         
