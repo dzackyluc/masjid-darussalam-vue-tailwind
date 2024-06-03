@@ -4,6 +4,7 @@ import { isAuthenticated } from './auth';
 
 const Index = () => import('../pages/Index.vue');
 const About = () => import('../pages/About.vue');
+const Activity = () => import('../pages/Activity.vue');
 const Zakat = () => import('../pages/Zakat.vue');
 const Infaq = () => import('../pages/Infaq.vue');
 const Blog = () => import('../pages/Blog.vue');
@@ -16,6 +17,8 @@ const ActivitiesAdmin = () => import('../pages/Admin/AdminActivity.vue');
 // const ReservasiAdmin = () => import('../pages/admin/Reservasi.vue');
 const ZakatAdmin = () => import('../pages/Admin/AdminZakat.vue');
 
+const Galeri = () => import('../pages/Galeri.vue');
+const Profile = () => import('../pages/Profile.vue');
 const Login = () => import('../pages/Auth/Login.vue');
 const Register = () => import('../pages/Auth/Register.vue');
 
@@ -50,7 +53,21 @@ const router = createRouter({
             component: Infaq,
         },
         {
+            path: '/activity',
+            component: Activity,
+        
+            },
+            {
+            path: '/galeri',
+            component: Galeri,
+        },
+        {
+            path: '/profil',
+            component: Profile,
+        },
+        {
             path: '/blog',
+            
             children: [
                 {
                     path: '',

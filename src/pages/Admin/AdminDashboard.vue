@@ -58,18 +58,69 @@
               </div>
             </div>
           </div>
+          <div class="row">
+            <div class="col-12 col-lg-4 col-md-4">
+              <div class="card">
+                <div class="card-body px-4 py-4-5">
+                  <div class="row">
+                    <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
+                      <h6 class="text-muted font-semibold">
+                        <i class="bi bi-people"></i> User
+                      </h6>
+                      <h6 class="font-extrabold mb-0">
+                        {{ jumlahUser }} Orang
+                      </h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-lg-4 col-md-4">
+              <div class="card">
+                <div class="card-body px-4 py-4-5">
+                  <div class="row">
+                    <div class="col-md-8 col-lg-12">
+                      <h6 class="text-muted font-semibold">
+                        <i class="bi bi-cash"></i> Rata Rata Zakat
+                      </h6>
+                      <h6 class="font-extrabold mb-0">
+                        {{ formatCurrency(avgZakat) }}
+                      </h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-lg-4 col-md-4">
+              <div class="card p-2 mb-2 text-center">
+                <h6 class="font-extrabold text-xxl mb-0">Blog User</h6>
+              </div>
+
+              <div
+                class="card mb-2 p-2"
+                v-for="(blg_us, index) in blog_user"
+                :key="index"
+              >
+                <div class="d-flex justify-between px-3">
+                  <h6 class="font-bold text-xl mb-0">{{ blg_us.name }}</h6>
+                  <h6 class="font-bold text-xl mb-0">
+                    {{ blg_us.total_blogs }} Blog
+                  </h6>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
+        <br />
+        <br />
+        <br />
         <div class="page-heading">
           <h4>Blog</h4>
         </div>
         <div class="col-12 col-lg-12">
           <div class="d-flex gap-3 flex-wrap">
-            <div
-              v-for="blog in blogs"
-              :key="blog.id"
-              class=""
-            >
+            <div v-for="blog in blogs" :key="blog.id" class="">
               <div class="card" style="width: 15rem">
                 <img
                   :src="getImagePath('blog', blog.thumbnail)"
@@ -126,6 +177,11 @@ export default {
       zakatTotal: 0,
       infaqTotal: 0,
       activity: [],
+      jumlahUser: 0,
+      blog_user: [],
+      avgZakat: 0,
+      userVerifInfaq: [],
+      zakatGreater: [],
     };
   },
   mounted() {
@@ -152,6 +208,9 @@ export default {
         this.zakatTotal = dt.zakatTotal;
         this.infaqTotal = dt.infaqTotal;
         this.activity = dt.activity;
+        this.jumlahUser = dt.jumlahUser[0].total_users;
+        this.avgZakat = dt.rata_rata_zakat;
+        this.blog_user = dt.blog_per_user;
       } catch (error) {
         console.error("There was a problem fetching the blogs:", error);
       }
