@@ -155,7 +155,7 @@ const cc = [
     },
   },
   {
-    data: "user.name",
+    data: "name",
     render: (data) => {
       return data;
     },
