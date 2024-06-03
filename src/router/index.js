@@ -50,6 +50,10 @@ const router = createRouter({
             component: Infaq,
         },
         {
+            path: '/galeri',
+            component: Galeri,
+        },
+        {
             path: '/blog',
             children: [
                 {
