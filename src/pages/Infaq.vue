@@ -57,6 +57,7 @@
         </div>
         <AppFooter />
     </div>
+    <AppFooter />
 </template>
 
 <script setup>

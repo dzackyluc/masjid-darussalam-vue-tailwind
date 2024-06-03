@@ -63,14 +63,6 @@
                 >Infaq</a
               >
             </div>
-            <div>
-              <a
-                href="#"
-                class="font-medium text-white hover:text-teal-600"
-                style="font-family: 'Tajawal', sans-serif"
-                >Reservasi</a
-              >
-            </div>
           </div>
           <br />
           <br />

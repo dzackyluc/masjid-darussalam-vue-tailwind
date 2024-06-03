@@ -11,7 +11,7 @@
 <script setup>
 import { get } from 'jquery';
 import AppBar from '../components/AppBar.vue';
-import AppFooter from '../components/AppFooter.vue';
+import AppFooter from "../components/AppFooter.vue";
 </script>
 
 <script>
