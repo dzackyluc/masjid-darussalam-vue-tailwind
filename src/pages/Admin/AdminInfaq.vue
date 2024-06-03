@@ -6,12 +6,14 @@ import $ from "jquery";
 import DataTable from "datatables.net-vue3";
 import Modal from "../../components/Modal.vue";
 import Swal from "sweetalert2";
+import * as XLSX from "xlsx";
 
 DataTable.use(DataTablesCore);
 
 const token = localStorage.getItem("authToken");
 
 const Infaq = ref([]);
+const totalInfaq = ref(0);
 const newInfaq = ref({
   title: "",
   amount: "",
@@ -27,9 +29,8 @@ const fetchInfaq = async () => {
     }
     const data = await response.json();
 
-    console.log("INI DATAAAAA");
-    console.log(data.data.data);
     Infaq.value = data.data.data;
+    totalInfaq.value = data.totalInfaq;
   } catch (error) {
     console.error("There was a problem fetching the Infaq:", error);
   }
@@ -77,26 +78,41 @@ const addInfaq = async () => {
 };
 
 const deleteInfaq = async (InfaqId) => {
-  Swal.showLoading();
-
-  try {
-    const response = await fetch(
-      `${import.meta.env.VITE_BASE_URL}/api/infaq/${InfaqId}`,
-      {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+   Swal.fire({
+    title: "Apakah Anda yakin?",
+    text: "Data yang dihapus tidak dapat dikembalikan!",
+    icon: "warning",
+    showCancelButton: true,
+   
+    confirmButtonText: "Ya, hapus!", 
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      Swal.showLoading();
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_BASE_URL}/api/infaq/${InfaqId}`,
+          {
+            method: "DELETE",
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        fetchInfaq();
+        Swal.close();
+        Swal.fire({
+          icon: "success",
+          title: "Berhasil",
+          text: "Data Infaq berhasil dihapus",
+        });
+      } catch (error) {
+        console.error("There was a problem deleting the infaq:", error);
       }
-    );
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
     }
-    fetchInfaq();
-    Swal.close();
-  } catch (error) {
-    console.error("There was a problem deleting the Infaq:", error);
-  }
+  });
 };
 
 const initializeDataTable = () => {
@@ -139,7 +155,7 @@ const cc = [
     },
   },
   {
-    data: "user.name",
+    data: "name",
     render: (data) => {
       return data;
     },
@@ -159,6 +175,13 @@ const cc = [
     },
   },
 ];
+
+const exportToExcel = () => {
+  const worksheet = XLSX.utils.json_to_sheet(Infaq.value);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Infaq");
+  XLSX.writeFile(workbook, "Infaq.xlsx");
+};
 
 onMounted(() => {
   fetchInfaq();
@@ -200,7 +223,7 @@ const showModal = () => {
           <div class="card-header">
             <h1 class="mt-4" style="float: left">Laporan Infaq</h1>
             <h3 style="float: right; margin-top: 2.5rem">
-              Total : Rp3.000.000
+              Total : {{totalInfaq}}
             </h3>
           </div>
           <div class="card-body">
@@ -268,19 +291,11 @@ const showModal = () => {
         <!-- Modal Create -->
 
         <div class="d-flex justify-content-end gap-3">
+          
           <button
             type="button"
             class="btn btn-primary"
-            data-toggle="modal"
-            data-target="#myModal"
-          >
-            Request
-          </button>
-          <button
-            type="button"
-            class="btn btn-primary"
-            data-toggle="modal"
-            data-target="#myModal"
+         @click="exportToExcel"
           >
             Print
           </button>

@@ -4,13 +4,13 @@
         <div class="container flex flex-col">
             <div class="button-header flex flex-row justify-center m-10 gap-8 items-center">
                 <button
-                    class="flex items-center justify-center h-[50px] w-[300px] font-medium shadow-md text-xl bg-[#F6EFE5] transition transform hover:-translate-y-1 hover:scale-110 duration-300 cursor-pointer rounded-[25px] text-black max-sm:mt-12"
+                    class="flex items-center justify-center h-[50px] w-[300px] font-medium shadow-md text-xl bg-[#4E6F52]   transition transform hover:-translate-y-1 hover:scale-110 duration-300 cursor-pointer rounded-[25px] text-white max-sm:mt-12"
                     data-el="button-1" id="button-hari-ini"
                 >
                     Hari ini
                 </button>
                 <button
-                    class="flex items-center justify-center h-[50px] w-[300px]  font-medium shadow-md text-xl bg-[#4E6F52] transition transform hover:-translate-y-1 hover:scale-110 duration-300 cursor-pointer rounded-[25px] text-white max-sm:mt-12"
+                    class="flex items-center justify-center h-[50px] w-[300px]  font-medium shadow-md text-xl bg-[#F6EFE5] transition transform hover:-translate-y-1 hover:scale-110 duration-300 cursor-pointer rounded-[25px] text-black max-sm:mt-12"
                     data-el="button-2" id="button-akan-datang"
                 >
                     Akan Datang
@@ -53,21 +53,19 @@
                     </div>
                 </div>
             </div>
-            <div id="card-kegiatan-today" class="card-kegiatan-today flex flex-col items-center w-full mt-10">
-                <div v-for="(Activity, index) in ActivitysToday"
-                    :key="index">
+            <div id="card-kegiatan-today" v-for="(Activity, index) in ActivitysToday"
+                    :key="index" class="card-kegiatan-today flex flex-col justify-center items-center w-full mt-10">
                     <div v-for="item in ActivitysToday[index]" :key="item.id" class="card bg-[#F6EFE5] shadow-md rounded-lg overflow-hidden w-1/2">
                         <div class="p-6 cursor-pointer hover:shadow-lg">
                             <h2 class="text-2xl font-semibold text-gray-800">{{ item.title }}</h2>
                             <p class="text-gray-600 mt-4">{{ item.description }}</p>
-                            <p class="text-gray-500 mt-2">Time: June 3, 2024, 5:00 PM</p>
+                            <p class="text-gray-500 mt-2">Time: {{ item.start_date }}-{{ item.end_date.split('')[1] }}</p>
                         </div>
-                    </div>
-                    /div>
+                </div>
             </div>
         </div>
-        </div>
     </div>
+
 </template>
 
 <script setup>
@@ -142,7 +140,7 @@ onMounted(()=>{
             document.getElementById('button-akan-datang').classList.add('bg-[#F6EFE5]', 'text-black');
         });
 
-        document.getElementById('button-akan-datang').addEventListener('click', function() {
+    document.getElementById('button-akan-datang').addEventListener('click', function() {
             document.getElementById('table-kegiatan-coming').classList.remove('hidden');
             document.getElementById('card-kegiatan-today').classList.add('hidden');
             this.classList.add('bg-[#4E6F52]', 'text-white');

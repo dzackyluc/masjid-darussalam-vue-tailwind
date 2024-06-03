@@ -34,6 +34,10 @@ const handleFileUpload = (event) => {
 };
 
 const addActivity = async () => {
+
+  Swal.showLoading();
+
+
   if (isEditing.value) {
     updateActivity();
   } else {
@@ -67,6 +71,14 @@ const addActivity = async () => {
       const data = await response.json();
       Activitys.value.push(data.data);
       resetForm();
+
+      Swal.close();
+      Swal.fire({
+        icon: "success",
+        title: "Berhasil",
+        text: "Data Kegiatan berhasil ditambahkan",
+      });
+
     } catch (error) {
       console.error("There was a problem adding the activity:", error);
     }
@@ -85,6 +97,8 @@ const editActivity = (activity) => {
 };
 
 const updateActivity = async () => {
+  Swal.showLoading();
+
   try {
     console.log("Updating activity with ID:", currentActivityId.value); // Debugging ID
     const myHeaders = new Headers();
@@ -121,31 +135,52 @@ const updateActivity = async () => {
     const index = Activitys.value.findIndex(activity => activity.id === currentActivityId.value);
     Activitys.value[index] = data.data;
     resetForm();
+    Swal.close();
+    Swal.fire({
+      icon: "success",
+      title: "Berhasil",
+      text: "Data Kegiatan berhasil diupdate",
+    });
   } catch (error) {
     console.error("There was a problem updating the activity:", error);
   }
 };
 
 const deleteActivity = async (ActivityId) => {
-  try {
-    const response = await fetch(
-      `${import.meta.env.VITE_BASE_URL}/api/activity/${ActivityId}`,
-      {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+  Swal.fire({
+    title: "Apakah Anda yakin?",
+    text: "Data yang dihapus tidak dapat dikembalikan!",
+    icon: "warning",
+    showCancelButton: true,
+   
+    confirmButtonText: "Ya, hapus!",
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      Swal.showLoading();
+
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_BASE_URL}/api/activity/${ActivityId}`,
+          {
+            method: "DELETE",
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        Activitys.value = Activitys.value.filter(
+          (Activity) => Activity.id !== ActivityId
+        );
+        Swal.close();
+        Swal.fire("Deleted!", "Data Kegiatan berhasil dihapus.", "success");
+      } catch (error) {
+        console.error("There was a problem deleting the Activity:", error);
       }
-    );
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
     }
-    Activitys.value = Activitys.value.filter(
-      (Activity) => Activity.id !== ActivityId
-    );
-  } catch (error) {
-    console.error("There was a problem deleting the Activity:", error);
-  }
+  });
 };
 
 const resetForm = () => {
@@ -234,7 +269,7 @@ onMounted(fetchActivitys);
         <section class="section">
           <div class="card">
             <div class="card-header">
-              <h2 class="card-title">{{ isEditing ? 'Edit Activity' : 'Add Activity' }}</h2>
+              <h2 class="card-title">{{ isEditing ? 'Edit Kegiatan' : 'Add Kegiatan' }}</h2>
             </div>
 
             <div class="card-body">

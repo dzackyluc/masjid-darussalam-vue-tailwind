@@ -1,12 +1,10 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import Editor from "@tinymce/tinymce-vue";
-import DataTablesCore from "datatables.net-bs5";
+import DataTable from "datatables.net-bs5";
+// import "datatables.net-dt/css/jquery.dataTables.css";
 import $ from "jquery";
-import DataTable from "datatables.net-vue3";
 import * as XLSX from "xlsx";
-
-DataTable.use(DataTablesCore);
 
 const token = localStorage.getItem("authToken");
 
@@ -42,80 +40,7 @@ const fetchZakat = async () => {
   }
 };
 
-const cc = [
-  {
-    data: "id",
-    render: (data, type, row, meta) => {
-      return meta.row + 1;
-    },
-  },
-  {
-    data: "name",
-    render: (data) => {
-      return data;
-    },
-  },
-  {
-    data: "gender",
-    render: (data) => {
-      return data;
-    },
-  },
-  {
-    data: "date",
-    render: (data) => {
-      return data;
-    },
-  },
-  {
-    data: "amil",
-    render: (data) => {
-      return data;
-    },
-  },
-  {
-    data: "penerima",
-    render: (data) => {
-      return data;
-    },
-  },
-  {
-    data: "payment.payment_type",
-    render: (data) => {
-      return data;
-    },
-  },
-  {
-    data: "amount",
-    render: (data) => {
-      return data;
-    },
-  },
-  {
-    data: "status",
-    render: (data, type, row) => {
-      const pendingSelected = data === "pending" ? "selected" : "";
-      const diterimaSelected = data === "diterima" ? "selected" : "";
-      const disalurkanSelected = data === "disalurkan" ? "selected" : "";
 
-      return `
-        <select class="form-select status-change" data-id="${row.id}">
-          <option value="pending" ${pendingSelected}>Pending</option>
-          <option value="diterima" ${diterimaSelected}>Diterima</option>
-          <option value="disalurkan" ${disalurkanSelected}>Disalurkan</option>
-        </select>
-      `;
-    },
-  },
-  {
-    data: "id",
-    render: (data) => {
-      return `
-        <button class="btn btn-danger delete" data-id="${data}">Delete</button>
-      `;
-    },
-  },
-];
 
 const initializeDataTable = () => {
   $(document).ready(function () {
@@ -225,39 +150,22 @@ const exportToExcel = () => {
 const filterZakat = async (event) => {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_BASE_URL}/api/zakat?amount_min=${
-        filterAmmount.value.amount_min
-      }&amount_max=${filterAmmount.value.amount_max}`
+      `${
+        import.meta.env.VITE_BASE_URL
+      }/api/zakat?amount_min=${filterAmmount.value.amount_min}&amount_max=${filterAmmount.value.amount_max}`
     );
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
-
     const data = await response.json();
     Zakat.value = data.data.data;
     totalZakat.value = data.total;
-} catch (error) {
+  } catch (error) {
     console.error("There was a problem fetching the Zakat:", error);
   }
 };
 
 onMounted(fetchZakat);
-
-
-onMounted(() => {
-  fetchZakat();
-  $("#dataTable").on("click", ".delete", function () {
-    const id = $(this).data("id");
-    deleteZakat(id);
-  });
-   $("#dataTable").on("change", ".status-change", function (event) {
-    const id = $(this).data("id");
-    ChangeStatus(id, event);
-  });
-
-});
-
-
 </script>
 
 <template>
@@ -289,38 +197,40 @@ onMounted(() => {
             </h3>
           </div>
           <div class="card-body">
-            <form @submit.prevent="filterZakat">
-              <div class="d-flex gap-2">
-                <input
-                  style="width: 300px"
-                  type="text"
-                  class="form-control"
-                  id="title"
-                  placeholder="Jumlah minimal"
-                  v-model="filterAmmount.amount_min"
-                  aria-describedby="emailHelp"
-                />
+            
+          <form @submit.prevent="filterZakat">
+            
+            
+            <div class="d-flex gap-2">
+              <input style="width:300px"
+                type="text"
+                class="form-control"
+                id="title"
+                placeholder="Jumlah minimal"
+                v-model="filterAmmount.amount_min"
+                aria-describedby="emailHelp"
+              />
 
-                <input
-                  style="width: 300px"
-                  type="text"
-                  class="form-control"
-                  id="title"
-                  placeholder="Jumlah maksimal"
-                  v-model="filterAmmount.amount_max"
-                  aria-describedby="emailHelp"
-                />
+              <input
+              style="width:300px"
+                type="text"
+                class="form-control"
+                id="title"
+                placeholder="Jumlah maksimal"
+                v-model="filterAmmount.amount_max"
+                aria-describedby="emailHelp"
+              />
 
-                <button class="btn btn-primary" type="submit">Filter</button>
-              </div>
-            </form>
+<button class="btn btn-primary" type="submit">Filter</button>
+            </div>
+          </form>
 
             <div class="table-responsive">
-              <DataTable
+              <table
+                class="table table-bordered"
                 id="dataTable"
-                :data="Zakat"
-                :columns="cc"
-                class="display table table-bordered"
+                width="100%"
+                cellspacing="0"
               >
                 <thead>
                   <tr>
@@ -336,7 +246,53 @@ onMounted(() => {
                     <th>Action</th>
                   </tr>
                 </thead>
-              </DataTable>
+                <tbody>
+                  <tr v-for="(zakat, index) in Zakat" :key="zakat.id">
+                    <td>{{ index + 1 }}</td>
+                    <td>{{ zakat.name }}</td>
+                    <td>{{ zakat.gender }}</td>
+                    <td>{{ zakat.date }}</td>
+                    <td>{{ zakat.amil }}</td>
+                    <td>{{ zakat.penerima }}</td>
+                    <td>{{ zakat.payment.payment_type }}</td>
+                    <td>{{ zakat.amount }}</td>
+                    <td>
+                      <select
+                        class="form-select"
+                        name="status"
+                        @change="ChangeStatus(zakat.id, $event)"
+                      >
+                        <option
+                          value="pending"
+                          :selected="zakat.status === 'pending'"
+                        >
+                          Pending
+                        </option>
+                        <option
+                          value="diterima"
+                          :selected="zakat.status === 'diterima'"
+                        >
+                          Diterima
+                        </option>
+                        <option
+                          value="disalurkan"
+                          :selected="zakat.status === 'disalurkan'"
+                        >
+                          Disalurkan
+                        </option>
+                      </select>
+                    </td>
+                    <td>
+                      <button
+                        class="ms-2 btn btn-danger"
+                        @click="deleteZakat(zakat.id)"
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>

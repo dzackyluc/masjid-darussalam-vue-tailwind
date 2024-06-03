@@ -1,12 +1,15 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
-import { isAuthenticated } from './auth'; 
+import { isAuthenticated } from './auth';
 
 const Index = () => import('../pages/Index.vue');
 const About = () => import('../pages/About.vue');
 const Activity = () => import('../pages/Activity.vue');
 const Zakat = () => import('../pages/Zakat.vue');
 const Infaq = () => import('../pages/Infaq.vue');
+const Blog = () => import('../pages/Blog.vue');
+const Kegiatan = () => import('../pages/Kegiatan.vue');
+const BlogDetail = () => import('../pages/Page.vue');
 const AdminIndex = () => import('../pages/Admin/AdminIndex.vue');
 const AdminDashboard = () => import('../pages/Admin/AdminDashboard.vue');
 const BlogAdmin = () => import('../pages/Admin/AdminBlog.vue');
@@ -51,6 +54,25 @@ const router = createRouter({
             path: '/activity',
             component: Activity,
         },
+        {
+            path: '/blog',
+            
+            children: [
+                {
+                    path: '',
+                    component: Blog
+                },
+                {
+                    path: 'read',
+                    component: BlogDetail,
+                    props: (route) => ({ id: route.query.id })
+                }
+            ]
+        },
+        {
+            path: '/kegiatan',
+            component: Kegiatan
+        },
 
         
 
@@ -93,10 +115,12 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
     if (to.matched.some(record => record.meta.requiresAuth)) {
         if (!isAuthenticated()) {
-            next({ path: '/login' }); 
+            next({ path: '/login' });
         } else {
             next();
         }
+    } else if ((to.path === '/login' || to.path === '/register') && isAuthenticated()) {
+        next({ path: '/admin/dashboard' });  
     } else {
         next();
     }
