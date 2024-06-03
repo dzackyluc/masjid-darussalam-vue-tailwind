@@ -163,6 +163,7 @@
 <script setup>
 import { get } from "jquery";
 import AppBar from "../components/AppBar.vue";
+import FooterBar from "../components/AppFooter.vue";
 
 const stripHTML = (html) => {
   const doc = new DOMParser().parseFromString(html, "text/html");
