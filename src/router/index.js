@@ -54,6 +54,10 @@ const router = createRouter({
             component: Galeri,
         },
         {
+            path: '/profil',
+            component: Profile,
+        },
+        {
             path: '/blog',
             children: [
                 {
