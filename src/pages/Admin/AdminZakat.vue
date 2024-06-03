@@ -16,6 +16,11 @@ const newZakat = ref({
   end_date: "",
 });
 
+const filterAmmount = ref({
+  amount_max: 0,
+  amount_min: 0,
+});
+
 const totalZakat = ref(0);
 
 const fetchZakat = async () => {
@@ -140,6 +145,24 @@ const exportToExcel = () => {
   XLSX.writeFile(workbook, "zakat.xlsx");
 };
 
+const filterZakat = async (event) => {
+  try {
+    const response = await fetch(
+      `${
+        import.meta.env.VITE_BASE_URL
+      }/api/zakat?amount_min=${filterAmmount.value.amount_min}&amount_max=${filterAmmount.value.amount_max}`
+    );
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    const data = await response.json();
+    Zakat.value = data.data.data;
+    totalZakat.value = data.total;
+  } catch (error) {
+    console.error("There was a problem fetching the Zakat:", error);
+  }
+};
+
 onMounted(fetchZakat);
 </script>
 
@@ -172,6 +195,34 @@ onMounted(fetchZakat);
             </h3>
           </div>
           <div class="card-body">
+            
+          <form @submit.prevent="filterZakat">
+            
+            
+            <div class="d-flex gap-2">
+              <input style="width:300px"
+                type="text"
+                class="form-control"
+                id="title"
+                placeholder="Jumlah minimal"
+                v-model="filterAmmount.amount_min"
+                aria-describedby="emailHelp"
+              />
+
+              <input
+              style="width:300px"
+                type="text"
+                class="form-control"
+                id="title"
+                placeholder="Jumlah maksimal"
+                v-model="filterAmmount.amount_max"
+                aria-describedby="emailHelp"
+              />
+
+<button class="btn btn-primary" type="submit">Filter</button>
+            </div>
+          </form>
+
             <div class="table-responsive">
               <table
                 class="table table-bordered"
