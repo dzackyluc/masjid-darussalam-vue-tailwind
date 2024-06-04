@@ -22,9 +22,7 @@ import Toolbar from 'primevue/toolbar';
                     <button class="block w-full px-3 py-2 text-sm text-center text-white hover:bg-gray-300 hover:text-black" @click="$router.push('/zakat');">Zakat</button>
                 </div>
             </div>
-            <button class="font-light text-green-700 px-4 py-3 hover:bg-gray-200 2xl:rounded-full" @click="$router.push('/login');">
-                <i class="pi pi-user text-2xl"></i>
-            </button>
+            
         </template>
     </Toolbar>
   </template>

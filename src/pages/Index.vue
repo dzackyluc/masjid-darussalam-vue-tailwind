@@ -297,8 +297,11 @@
                 <p class="text-gray-700 h-6 rounded-full text-center my-5">
                   {{ activities[0].description }}
                 </p>
+                 <br>
+            <br>
               </div>
             </div>
+           
           </div>
         </div>
         <div
@@ -306,8 +309,8 @@
           :key="index"
           class="row-span-1 col-span-1 place-content-center"
         >
-          <button class="p-8 rounded-xl w-full flex shadow-md border">
-            <div class="w-24 pl-3 bg-white rounded text-start">
+          <button class="p-8 rounded-xl w-full flex flex-wrap justify-center shadow-md border">
+            <div class="w-24 bg-white rounded text-start">
               <div class="text-bold text-xl">
                 {{ new Date(item.start_date).toDateString().substring(4, 10) }}
               </div>
@@ -315,7 +318,7 @@
                 {{ new Date(item.start_date).toDateString().substring(0, 3) }}
               </div>
             </div>
-            <div class="w-full pl-4">
+            <div class="w-full">
               <div class="text-bold text-xl">{{ item.title }}</div>
               <div class="text-base">
                 {{ new Date(item.start_date).toLocaleTimeString() }}

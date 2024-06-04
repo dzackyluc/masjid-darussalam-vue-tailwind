@@ -82,7 +82,7 @@
               class="ml-2 font-medium text-white"
               style="font-family: 'Tajawal', sans-serif"
             >
-              masjidjamidarusslam@gmail.com
+              masjid@gmail.com
             </p>
           </div>
         </div>
