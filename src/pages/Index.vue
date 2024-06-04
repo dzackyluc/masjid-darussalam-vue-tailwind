@@ -137,7 +137,7 @@
                             <div class="mb-5">
                                 <div class="text-gray-900 text-center font-bold text-3xl">{{ activities[0].title }}</div>
                                 <div class="text-gray-900 text-center text-xl mb-2 ">{{ new Date(activities[0].start_date).toLocaleDateString() }} | {{ new Date(activities[0].start_date).toLocaleTimeString() }}</div>
-                                <p class="text-gray-700 h-6 rounded-full my-5">{{ activities[0].description }}</p>
+                                <p class="text-gray-700 h-6 rounded-full m-5">{{ activities[0].description }}</p>
                             </div>
                         </div>
                     </div>
