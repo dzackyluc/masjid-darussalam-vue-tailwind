@@ -337,7 +337,7 @@
       </div>
       <div v-else class="grid grid-cols-2 grid-rows-4 gap-4">
         <div class="row-span-4 lg:col-span-1 col-span-2">
-          <div class="grid grid-cols-2 h-full w-full rounded-xl bg-[#F6EFE5]">
+          <div class="grid grid-cols-2 h-full w-full rounded-xl bg-white border shadow-xl">
             <div
               class="bg-gray-300 animate-pulse rounded-md h-full w-full col-span-1 bg-cover"
             ></div>
@@ -348,7 +348,7 @@
                   class="bg-gray-300 animate-pulse h-6 mt-1 rounded-full mb-10"
                 ></div>
                 <p
-                  v-for="n in 9"
+                  v-for="n in 8"
                   :key="n"
                   class="bg-gray-300 animate-pulse h-6 rounded-full mb-5"
                 ></p>
@@ -361,7 +361,7 @@
           :key="n"
           class="row-span-1 col-span-1 place-content-center"
         >
-          <div class="p-8 rounded-xl w-full bg-[#F6EFE5] flex">
+          <div class="p-8 rounded-xl w-full bg-white flex border shadow-sm">
             <div
               class="w-24 pl-3 h-14 bg-gray-300 animate-pulse text-start"
             ></div>
