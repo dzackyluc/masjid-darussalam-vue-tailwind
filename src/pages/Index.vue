@@ -1,7 +1,7 @@
 <template>
   <AppBar />
   <div
-    class="background-image md:bg-cover bg-contain bg-no-repeat h-screen w-full"
+    class="background-image md:bg-cover bg-contain bg-no-repeat h-screen w-full" style="height: 70vh;"
   ></div>
   <div
     class="bg-white flex rounded-3xl mb-24 md:text-xl items-center md:-mt-20 mt-[-480px] md:w-1/2 w-11/12 m-auto md:h-40 h-50 drop-shadow-md cursor-pointer transition transform hover:-translate-y-1 hover:scale-103 duration-300 justify-center text-green-800"
@@ -325,6 +325,14 @@
               </div>
             </div>
           </button>
+        </div>
+        <div>
+            <button
+                @click="$router.push('/activity')"
+                class="bg-green-800 hover:bg-gray-400 hover:text-black text-white rounded-xl h-10 w-32"
+                >
+                Lihat Semua
+                </button>
         </div>
       </div>
       <div v-else class="grid grid-cols-2 grid-rows-4 gap-4">

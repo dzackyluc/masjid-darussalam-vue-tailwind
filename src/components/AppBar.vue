@@ -10,11 +10,11 @@ import Toolbar from 'primevue/toolbar';
             </div>
         </template>
         <template #end>
-            <button :class="'font-light text-green-700 pr-3 text-xl ' + ($route.path === '/' ? 'underline' : 'hover:underline')" @click="$router.push('/');">Home</button>
-            <button :class="'font-light text-green-700 px-4 text-xl ' + ($route.path === '/profil' ? 'underline' : 'hover:underline')" @click="$router.push('/profil');">Profil</button>
-            <button :class="'font-light text-green-700 px-6 text-xl ' + ($route.path === '/galeri' ? 'underline' : 'hover:underline')" @click="$router.push('/galeri');">Galeri</button>
+            <button :class="'font-semibold text-green-700 pr-3 text-xl custom-underline ' + ($route.path === '/' ? ' active' : 'hover:text-gray-500')" @click="$router.push('/');">Home</button>
+            <button :class="'font-semibold text-green-700 px-4 text-xl ml-2 custom-underline ' + ($route.path === '/profil' ? 'active' : 'hover:text-gray-500')" @click="$router.push('/profil');">Profil</button>
+            <button :class="'font-semibold text-green-700 px-6 text-xl  custom-underline ' + ($route.path === '/galeri' ? 'active' : 'hover:text-gray-500')" @click="$router.push('/galeri');">Galeri</button>
             <div class="relative" @mouseover="isOpen = true" @mouseleave="isOpen = false">
-                <button class="font-light text-green-700 px-4 hover:underline text-xl">
+                <button class="font-semibold text-green-700 px-4 custom-underline hover:text-gray-500 text-xl">
                     Layanan <i class="pi pi-chevron-down"></i>
                 </button>
                 <div v-show="isOpen" class="absolute w-32 bg-green-800 border border-gray-300 rounded shadow-md z-50" @mouseover="isOpen = true" @mouseleave="isOpen = false">
@@ -22,7 +22,13 @@ import Toolbar from 'primevue/toolbar';
                     <button class="block w-full px-3 py-2 text-sm text-center text-white hover:bg-gray-300 hover:text-black" @click="$router.push('/zakat');">Zakat</button>
                 </div>
             </div>
+<<<<<<< HEAD
             
+=======
+            <button class="font-semibold text-green-700 px-4 py-3 hover:bg-gray-200 2xl:rounded-full" @click="$router.push('/login');">
+                <i class="pi pi-user text-2xl"></i>
+            </button>
+>>>>>>> bdfc54030eb0152bc8736ec05033446c2aa919c8
         </template>
     </Toolbar>
   </template>
