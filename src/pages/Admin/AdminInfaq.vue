@@ -100,8 +100,8 @@ const deleteInfaq = async (InfaqId) => {
         );
         if (!response.ok) {
           Swal.fire({
-            icon: "Ada field yang belum diisi",
-            title: "Berhasil",
+            icon: "error",
+            title: "Ada field yang belum diisi",
             text: "Data Zakat gagal ditambahkan",
           });
           throw new Error("Network response was not ok");

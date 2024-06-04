@@ -67,9 +67,9 @@ const addActivity = async () => {
       );
       if (!response.ok) {
         Swal.fire({
-            icon: "Ada field yang belum diisi",
-            title: "Berhasil",
-            text: "Data Zakat gagal ditambahkan",
+            icon: "error",
+            title: "Ada field yang belum diisi",
+            text: "Data kegiatan gagal ditambahkan",
           });
         throw new Error("Network response was not ok");
       }
