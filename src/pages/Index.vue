@@ -309,22 +309,22 @@
           :key="index"
           class="row-span-1 col-span-1 place-content-center"
         >
-          <button class="p-8 rounded-xl w-full flex flex-wrap justify-center shadow-md border">
+          <div class="p-8 rounded-xl w-full flex flex-wrap justify-center shadow-md border">
             <div class="w-24 bg-white rounded text-start">
-              <div class="text-bold text-xl">
+              <div class="text-bold text-center text-xl">
                 {{ new Date(item.start_date).toDateString().substring(4, 10) }}
               </div>
-              <div class="text-base">
+              <div class="text-base text-center">
                 {{ new Date(item.start_date).toDateString().substring(0, 3) }}
               </div>
             </div>
             <div class="w-full">
-              <div class="text-bold text-xl">{{ item.title }}</div>
-              <div class="text-base">
+              <div class="text-bold text-center text-xl">{{ item.title }}</div>
+              <div class="text-base text-center">
                 {{ new Date(item.start_date).toLocaleTimeString() }}
               </div>
             </div>
-          </button>
+          </div>
         </div>
         <div class="flex justify-end col-span-2">
             <button
