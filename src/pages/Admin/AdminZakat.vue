@@ -143,7 +143,9 @@ const deleteZakat = async (id) => {
           }
         );
         if (!response.ok) {
+            
           throw new Error("Network response was not ok");
+        
         }
         fetchZakat();
       } catch (error) {
