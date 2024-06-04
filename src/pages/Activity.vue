@@ -1,6 +1,6 @@
 <template>
+    <AppBar />
     <div>
-        <AppBar />
         <div class="container flex flex-col">
             <div class="button-header flex flex-row justify-center m-10 gap-8 items-center">
                 <button
@@ -64,7 +64,6 @@
                 </div>
             </div>
         </div>
-        <AppFooter />
     </div>
     <AppFooter />
 </template>
