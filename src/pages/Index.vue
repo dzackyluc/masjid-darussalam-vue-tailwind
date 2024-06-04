@@ -305,7 +305,7 @@
           </div>
         </div>
         <div
-          v-for="(item, index) in activities.slice(1, 4)"
+          v-for="(item, index) in activities.slice(1, 5)"
           :key="index"
           class="row-span-1 col-span-1 place-content-center"
         >
@@ -326,10 +326,10 @@
             </div>
           </button>
         </div>
-        <div>
+        <div class="flex justify-end col-span-2">
             <button
                 @click="$router.push('/activity')"
-                class="bg-green-800 hover:bg-gray-400 hover:text-black text-white rounded-xl h-10 w-32"
+                :class="'bg-green-800 hover:bg-gray-400 hover:text-black text-white rounded-xl h-10 w-32 ' + (activities >= 4 ? 'hidden' : '')"
                 >
                 Lihat Semua
                 </button>
@@ -490,6 +490,7 @@ export default {
       activities: null,
       Fajr: null,
       fulljadwal: null,
+      button: false,
     };
   },
 
