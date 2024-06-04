@@ -89,7 +89,7 @@
   }
   
   .custom-underline.active::after {
-    width: 90%; /* Lebar underline saat aktif */
+    width: 100%; /* Lebar underline saat aktif */
   }
   
   
