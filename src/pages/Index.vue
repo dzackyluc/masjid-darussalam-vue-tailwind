@@ -253,7 +253,7 @@
           v-else
           v-for="n in 3"
           :key="n"
-          class="container md:col-span-1 col-span-2"
+          class="container md:col-span-1 md:flex-1 col-span-2"
         >
           <div class="rounded overflow-hidden shadow-lg bg-white">
             <div class="bg-gray-400 h-32 w-full animate-pulse"></div>
