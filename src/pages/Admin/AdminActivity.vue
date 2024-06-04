@@ -66,6 +66,11 @@ const addActivity = async () => {
         requestOptions
       );
       if (!response.ok) {
+        Swal.fire({
+            icon: "error",
+            title: "Ada field yang belum diisi",
+            text: "Data kegiatan gagal ditambahkan",
+          });
         throw new Error("Network response was not ok");
       }
       const data = await response.json();
