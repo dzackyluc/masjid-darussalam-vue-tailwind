@@ -1,10 +1,7 @@
 <script setup>
 import AppBar from '../components/AppBar.vue';
-<<<<<<< HEAD
 import AppFooter from "../components/AppFooter.vue";
-=======
 import axios from 'axios';
->>>>>>> f1f078f0fc47e8c85dc7af8e4e834b37ec3fb7f2
 </script>
 
 <template>
@@ -13,12 +10,12 @@ import axios from 'axios';
         <div class=" px-14 text-5xl text-gray-400">Blog</div>
     </div>
     <div class="px-14">
-        <div v-if="response" class="grid grid-cols-3 gap-5">
+        <div v-if="response" class="grid grid-cols-3 gap-5 ">
             <div v-for="(item, index) in response" :key="index" class="col-span-3 lg:col-span-1" @click="$router.push(`/blog/read?id=${item.id}`)">
-                <div class="bg-white shadow-md rounded-lg p-6 hover:bg-green-300">
+                <div class="bg-white shadow-md rounded-lg p-6 transition transform hover:-translate-y-1 hover:scale-105 duration-300 cursor-pointer">
                     <img :src="`${image}${item.thumbnail}`" class="w-full h-48 object-cover rounded-lg">
                     <div class="text-xl py-3 truncate">{{ item.title }}</div>
-                    <div class=" text-gray-500 line-clamp-4">{{ parser(item.content) }}</div>
+                    <div class=" text-gray-500 line-clamp-6">{{ parser(item.content) }}</div>
                 </div>
             </div>
         </div>

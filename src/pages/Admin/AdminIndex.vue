@@ -4,9 +4,9 @@
       <div class="sidebar-wrapper active">
         <div class="sidebar-header position-relative">
           <div class="d-flex justify-content-between align-items-center">
-            <div class="logo">
+            <a  href="/" class="text-white logo">
               <span>MQADM</span>
-            </div>
+            </a>
             <div class="sidebar-toggler x">
               <a href="#" class="sidebar-hide d-xl-none d-block"
                 ><i class="bi bi-x bi-middle"></i

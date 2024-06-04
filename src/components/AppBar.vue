@@ -17,10 +17,9 @@ import Toolbar from 'primevue/toolbar';
                 <button class="font-semibold text-green-700 px-4 custom-underline hover:text-gray-500 text-xl">
                     Layanan <i class="pi pi-chevron-down"></i>
                 </button>
-                <div v-show="isOpen" class="absolute bg-green-800 border border-gray-300 rounded shadow-md z-50" @mouseover="isOpen = true" @mouseleave="isOpen = false">
+                <div v-show="isOpen" class="absolute w-32 bg-green-800 border border-gray-300 rounded shadow-md z-50" @mouseover="isOpen = true" @mouseleave="isOpen = false">
                     <button class="block w-full px-3 py-2 text-sm text-center text-white hover:bg-gray-300 hover:text-black" @click="$router.push('/infaq');">Infaq</button>
                     <button class="block w-full px-3 py-2 text-sm text-center text-white hover:bg-gray-300 hover:text-black" @click="$router.push('/zakat');">Zakat</button>
-                    <!-- <button class="block w-full px-3 py-2 text-sm text-center text-white hover:bg-gray-300 hover:text-black" @click="$router.push('/reservasi');">Reservasi</button> -->
                 </div>
             </div>
             <button class="font-semibold text-green-700 px-4 py-3 hover:bg-gray-200 2xl:rounded-full" @click="$router.push('/login');">
